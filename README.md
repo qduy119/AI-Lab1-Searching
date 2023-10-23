@@ -1,1 +1,1 @@
-# AI-Lab1-Searching
+# Project 1: Searching
