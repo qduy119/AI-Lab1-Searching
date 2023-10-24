@@ -106,7 +106,7 @@ SCORE_PENALTY = -1
 
 
 # Font
-FONT = r"../Fonts/8514fix.fon"
+FONT = r"../Fonts/8514oem.fon"
 
 
 # Color

@@ -15,7 +15,7 @@ class App:
     def __init__(self):
         pygame.init()
 
-        self.font = pygame.freetype.Font(FONT)
+        self.font = pygame.freetype.SysFont(FONT, 20)
         self.screen = pygame.display.set_mode((APP_WIDTH, APP_HEIGHT))
         self.caption = pygame.display.set_caption(APP_CAPTION)
 
