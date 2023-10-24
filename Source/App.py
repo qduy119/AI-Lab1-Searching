@@ -23,22 +23,25 @@ class App:
         self.current_level = 1
         self.score = 0
         self.cur_speed_index = 1
-        self.speed_list = [("SPEED: 0.5", 0.5), ("SPEED: 1.0", 1), ("SPEED: 2.0", 2), ("SPEED: 5.0", 5), ("SPEED: 10.0", 10)]
+        self.speed_list = [("SPEED: 0.5", 0.5),
+        ("SPEED: 1.0", 1), ("SPEED: 2.0", 2), ("SPEED: 5.0", 5), ("SPEED: 10.0", 10)]
 
         self.map = pygame.image.load(MAP_IMG[self.current_map_index])
         self.map = pygame.transform.scale(self.map, (MAP_WIDTH, MAP_HEIGHT))
         self.home_background = pygame.image.load(HOME_BACKGROUND)
-        self.home_background = pygame.transform.scale(self.home_background, (HOME_BG_WIDTH, HOME_BG_HEIGHT))
+        self.home_background = pygame.transform.scale(self.home_background,
+                                                (HOME_BG_WIDTH, HOME_BG_HEIGHT))
         self.about_background = pygame.image.load(ABOUT_BACKGROUND)
         self.about_background = pygame.transform.scale(self.about_background, (APP_WIDTH, APP_HEIGHT))
         self.level_background = self.home_background
         self.gameover_background = pygame.image.load(GAMEOVER_BACKGROUND)
         self.gameover_background = pygame.transform.scale(self.gameover_background,
-                                                          (GAMEOVER_BACKGROUND_WIDTH, GAMEOVER_BACKGROUND_HEIGHT))
+                            (GAMEOVER_BACKGROUND_WIDTH, GAMEOVER_BACKGROUND_HEIGHT))
         self.coin = pygame.image.load(COIN_IMAGE)
         self.coin = pygame.transform.scale(self.coin, (COIN_WIDTH, COIN_HEIGHT))
         self.victory_background = pygame.image.load(VICTORY_BACKGROUND)
-        self.victory_background = pygame.transform.scale(self.victory_background, (VICTORY_WIDTH, VICTORY_HEIGHT))
+        self.victory_background = pygame.transform.scale(self.victory_background, 
+                                                (VICTORY_WIDTH, VICTORY_HEIGHT))
         self.pacman1 = pygame.image.load(PACMAN1)
         self.pacman1 = pygame.transform.scale(self.pacman1, (PACMAN_WIDTH, PACMAN_HEIGHT))
         self.pacman2 = pygame.image.load(PACMAN2)
@@ -113,9 +116,9 @@ class App:
 
     def level_2(self):
         """
-        Level 2: monsters stand in the place ever (never move around).
-        If Pac-man pass through the monster or vice versa, game is over.
-        There is still one food in the map and Pac-man know its position.
+        Level 2:Monsters are stationary and do not move around. If Pac-Man and a monster
+        collide with each other, the game ends. There is still one food item on the map, and
+        Pac-Man knows its position
         """
         graph_map, pacman_pos, food_pos, monster_pos_list = \
             Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index], monster_as_wall=True)
@@ -834,13 +837,13 @@ class App:
         self.screen.blit(self.about_background, (0, 0))
         text_surf, text_rect = self.font.render("PROGRAMMERS", TOMATO)
         self.screen.blit(text_surf, (240, 100))
-        text_surf, text_rect = self.font.render("18127017 - Nguyen Hoang Nhan", TOMATO)
+        text_surf, text_rect = self.font.render("21120408 - Dang Tuan Anh", TOMATO)
         self.screen.blit(text_surf, (150, 150))
-        text_surf, text_rect = self.font.render("18127259 - Kieu Cong Hau", TOMATO)
+        text_surf, text_rect = self.font.render("21120426 - Huynh Phat Dat", TOMATO)
         self.screen.blit(text_surf, (150, 200))
-        text_surf, text_rect = self.font.render("18127267 - Tran Dinh Sang", TOMATO)
+        text_surf, text_rect = self.font.render("21120440 - Chu Quang Duy", TOMATO)
         self.screen.blit(text_surf, (150, 250))
-        text_surf, text_rect = self.font.render("18127268 - Tran Thanh Tam", TOMATO)
+        text_surf, text_rect = self.font.render("2112.... - Huu Vi Vo Danh", TOMATO)
         self.screen.blit(text_surf, (150, 300))
 
     def level_draw(self):
