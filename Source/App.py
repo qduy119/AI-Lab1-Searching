@@ -345,9 +345,12 @@ class App:
                     # Pacman moves with heuristic.
                     pacman.cell = HeuristicLocalSearch.local_search(cells, graph_cell, pacman.cell)
 
-                pacman.cell.pacman_come()
-                pacman.move(pacman.cell.pos)
-                self.update_score(SCORE_PENALTY)
+                if not hasattr(pacman.cell, 'pacman_come'):
+                    self.state = STATE_GAMEOVER
+                else :
+                    pacman.cell.pacman_come()
+                    pacman.move(pacman.cell.pos)
+                    self.update_score(SCORE_PENALTY)
 
                 # Spread the peas.
                 if not is_backtracking:
@@ -355,7 +358,11 @@ class App:
 
                 # Pacman went through Monsters?
                 for monster in monster_list:
-                    if pacman.cell.pos == monster.cell.pos:
+                    if not hasattr(pacman.cell, 'pos') :
+                        self.state = STATE_GAMEOVER
+                        pacman_is_caught = True
+                        break
+                    elif pacman.cell.pos == monster.cell.pos:
                         self.state = STATE_GAMEOVER
                         pacman_is_caught = True
                         break
@@ -455,10 +462,12 @@ class App:
                 else:
                     # Pacman moves with heuristic.
                     pacman.cell = HeuristicLocalSearch.local_search(cells, graph_map, pacman.cell)
-
-                pacman.cell.pacman_come()
-                pacman.move(pacman.cell.pos)
-                self.update_score(SCORE_PENALTY)
+                if not hasattr(pacman.cell, 'pacman_come'):
+                    self.state = STATE_GAMEOVER
+                else:
+                    pacman.cell.pacman_come()
+                    pacman.move(pacman.cell.pos)
+                    self.update_score(SCORE_PENALTY)
 
                 # Spread the peas.
                 if not is_backtracking:
@@ -466,7 +475,11 @@ class App:
 
                 # Pacman went through Monsters?
                 for monster in monster_list:
-                    if pacman.cell.pos == monster.cell.pos:
+                    if not hasattr(pacman.cell, 'pos'):
+                        self.state = STATE_GAMEOVER
+                        pacman_is_caught = True
+                        break
+                    elif pacman.cell.pos == monster.cell.pos:
                         self.state = STATE_GAMEOVER
                         pacman_is_caught = True
                         break
