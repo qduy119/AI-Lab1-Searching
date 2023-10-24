@@ -1,4 +1,5 @@
 from Constant import *
+from HeuristicLocalSearch import *
 
 def input_raw(map_input_path):
     try:
