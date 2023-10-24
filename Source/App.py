@@ -5,8 +5,8 @@ import Pacman
 import Food
 import Monster
 import Map
-# import GraphSearchAStar
-import HeuristicLocalSearch
+import GraphSearchAStar
+import HeuristicLocalSearch 
 from Constant import *
 
 
@@ -76,39 +76,39 @@ class App:
         Level 1: Pac-man know the food’s position in map and monsters do not appear in map.
         There is only one food in the map.
         """
-        # graph_map, pacman_pos, food_pos = Map.read_map_level_1(
-        #     MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
-        # path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
+        graph_map, pacman_pos, food_pos = Map.read_map_level_1(
+            MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
+        path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
 
-        # pacman = Pacman.Pacman(self, pacman_pos)
-        # pacman.appear()
+        pacman = Pacman.Pacman(self, pacman_pos)
+        pacman.appear()
 
-        # food = Food.Food(self, food_pos)
-        # food.appear()
+        food = Food.Food(self, food_pos)
+        food.appear()
 
-        # if self.ready():
-        #     if path is not None:
-        #         back_home = False
-        #         goal = path[-1]
-        #         path = path[1:-1]
+        if self.ready():
+            if path is not None:
+                back_home = False
+                goal = path[-1]
+                path = path[1:-1]
 
-        #         for cell in path:
-        #             pacman.move(cell)
-        #             self.update_score(SCORE_PENALTY)
-        #             pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
+                for cell in path:
+                    pacman.move(cell)
+                    self.update_score(SCORE_PENALTY)
+                    pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
 
-        #             if self.launch_game_event():
-        #                 back_home = True
-        #                 break
+                    if self.launch_game_event():
+                        back_home = True
+                        break
 
-        #         if not back_home:
-        #             pacman.move(goal)
-        #             self.update_score(SCORE_PENALTY + SCORE_BONUS)
-        #             self.state = STATE_VICTORY
-        #             pygame.time.delay(2000)
-        #     else:
-        #         self.state = STATE_GAMEOVER
-        #         pygame.time.delay(2000)
+                if not back_home:
+                    pacman.move(goal)
+                    self.update_score(SCORE_PENALTY + SCORE_BONUS)
+                    self.state = STATE_VICTORY
+                    pygame.time.delay(2000)
+            else:
+                self.state = STATE_GAMEOVER
+                pygame.time.delay(2000)
 
 
     def level_2(self):
@@ -117,67 +117,67 @@ class App:
         If Pac-man pass through the monster or vice versa, game is over.
         There is still one food in the map and Pac-man know its position.
         """
-        # graph_map, pacman_pos, food_pos, monster_pos_list = \
-        #     Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index], monster_as_wall=True)
+        graph_map, pacman_pos, food_pos, monster_pos_list = \
+            Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index], monster_as_wall=True)
 
-        # path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
+        path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
 
-        # pacman = Pacman.Pacman(self, pacman_pos)
-        # pacman.appear()
+        pacman = Pacman.Pacman(self, pacman_pos)
+        pacman.appear()
 
-        # food = Food.Food(self, food_pos)
-        # food.appear()
+        food = Food.Food(self, food_pos)
+        food.appear()
 
-        # monster_list = [Monster.Monster(self, monster_pos) for monster_pos in monster_pos_list]
-        # for monster in monster_list:
-        #     monster.appear()
+        monster_list = [Monster.Monster(self, monster_pos) for monster_pos in monster_pos_list]
+        for monster in monster_list:
+            monster.appear()
 
-        # if self.ready():
-        #     back_home = False
-        #     if path is None:
-        #         graph_map, pacman_pos, food_pos, monster_pos_list = \
-        #             Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index],
-        #                                  monster_as_wall=False)
+        if self.ready():
+            back_home = False
+            if path is None:
+                graph_map, pacman_pos, food_pos, monster_pos_list = \
+                    Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index],
+                                         monster_as_wall=False)
 
-        #         path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
+                path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
 
-        #         if path is not None:
-        #             path = path[1:]
+                if path is not None:
+                    path = path[1:]
 
-        #             for cell in path:
-        #                 pacman.move(cell)
-        #                 self.update_score(SCORE_PENALTY)
+                    for cell in path:
+                        pacman.move(cell)
+                        self.update_score(SCORE_PENALTY)
 
-        #                 if cell in monster_pos_list:
-        #                     break
+                        if cell in monster_pos_list:
+                            break
 
-        #                 pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
+                        pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
 
-        #                 if self.launch_game_event():
-        #                     back_home = True
-        #                     break
+                        if self.launch_game_event():
+                            back_home = True
+                            break
 
-        #         if not back_home:
-        #             self.state = STATE_GAMEOVER
-        #             pygame.time.delay(2000)
-        #     else:
-        #         goal = path[-1]
-        #         path = path[1:-1]
+                if not back_home:
+                    self.state = STATE_GAMEOVER
+                    pygame.time.delay(2000)
+            else:
+                goal = path[-1]
+                path = path[1:-1]
 
-        #         for cell in path:
-        #             pacman.move(cell)
-        #             self.update_score(SCORE_PENALTY)
-        #             pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
+                for cell in path:
+                    pacman.move(cell)
+                    self.update_score(SCORE_PENALTY)
+                    pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
 
-        #             if self.launch_game_event():
-        #                 back_home = True
-        #                 break
+                    if self.launch_game_event():
+                        back_home = True
+                        break
 
-        #         if not back_home:
-        #             pacman.move(goal)
-        #             self.update_score(SCORE_PENALTY + SCORE_BONUS)
-        #             self.state = STATE_VICTORY
-        #             pygame.time.delay(2000)
+                if not back_home:
+                    pacman.move(goal)
+                    self.update_score(SCORE_PENALTY + SCORE_BONUS)
+                    self.state = STATE_VICTORY
+                    pygame.time.delay(2000)
 
     def level_3(self):
         """
@@ -311,106 +311,106 @@ class App:
         Each step Pacman go, each step Monsters move.
         The food is so many.
         """
-        # # Read map.
-        # cells, graph_cell, pacman_cell, graph_map, food_cell_list, monster_cell_list = Map.read_map_level_4(
-        #     MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
+        # Read map.
+        cells, graph_cell, pacman_cell, graph_map, food_cell_list, monster_cell_list = Map.read_map_level_4(
+            MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
 
-        # # Initialize Pacman, Foods and Monsters.
-        # food_list = [Food.Food(self, food_cell.pos, food_cell) for food_cell in food_cell_list]
-        # for food in food_list:
-        #     food.appear()
+        # Initialize Pacman, Foods and Monsters.
+        food_list = [Food.Food(self, food_cell.pos, food_cell) for food_cell in food_cell_list]
+        for food in food_list:
+            food.appear()
 
-        # monster_list = [Monster.Monster(self, monster_cell.pos, monster_cell) for monster_cell in monster_cell_list]
-        # for monster in monster_list:
-        #     monster.appear()
+        monster_list = [Monster.Monster(self, monster_cell.pos, monster_cell) for monster_cell in monster_cell_list]
+        for monster in monster_list:
+            monster.appear()
 
-        # pacman = Pacman.Pacman(self, pacman_cell.pos, pacman_cell)
-        # pacman.appear()
+        pacman = Pacman.Pacman(self, pacman_cell.pos, pacman_cell)
+        pacman.appear()
 
-        # if self.ready():
-        #     back_home = False
-        #     pacman_is_caught = False
+        if self.ready():
+            back_home = False
+            pacman_is_caught = False
 
-        #     while True:
-        #         is_backtracking = False
-        #         pacman_old_cell = pacman.cell
+            while True:
+                is_backtracking = False
+                pacman_old_cell = pacman.cell
 
-        #         # Pacman observes all of Cells in its sight then decide the direction to move.
-        #         pacman.cell.pacman_leave()
-        #         pacman.observe(graph_cell, 3)
+                # Pacman observes all of Cells in its sight then decide the direction to move.
+                pacman.cell.pacman_leave()
+                pacman.observe(graph_cell, 3)
 
-        #         if not pacman.empty_brain() and not pacman.have_food_in_cur_sight() and not pacman.have_monster_in_cur_sight():
-        #             # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
-        #             pacman.cell = pacman.back_track(graph_cell)
-        #             is_backtracking = True
-        #         else:
-        #             # Pacman moves with heuristic.
-        #             pacman.cell = HeuristicLocalSearch.local_search(cells, graph_cell, pacman.cell)
+                if not pacman.empty_brain() and not pacman.have_food_in_cur_sight() and not pacman.have_monster_in_cur_sight():
+                    # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
+                    pacman.cell = pacman.back_track(graph_cell)
+                    is_backtracking = True
+                else:
+                    # Pacman moves with heuristic.
+                    pacman.cell = HeuristicLocalSearch.local_search(cells, graph_cell, pacman.cell)
 
-        #         pacman.cell.pacman_come()
-        #         pacman.move(pacman.cell.pos)
-        #         self.update_score(SCORE_PENALTY)
+                pacman.cell.pacman_come()
+                pacman.move(pacman.cell.pos)
+                self.update_score(SCORE_PENALTY)
 
-        #         # Spread the peas.
-        #         if not is_backtracking:
-        #             pacman.spread_peas(pacman_old_cell)
+                # Spread the peas.
+                if not is_backtracking:
+                    pacman.spread_peas(pacman_old_cell)
 
-        #         # Pacman went through Monsters?
-        #         for monster in monster_list:
-        #             if pacman.cell.pos == monster.cell.pos:
-        #                 self.state = STATE_GAMEOVER
-        #                 pacman_is_caught = True
-        #                 break
-        #         if pacman_is_caught:
-        #             break
+                # Pacman went through Monsters?
+                for monster in monster_list:
+                    if pacman.cell.pos == monster.cell.pos:
+                        self.state = STATE_GAMEOVER
+                        pacman_is_caught = True
+                        break
+                if pacman_is_caught:
+                    break
 
-        #         # Pacman ate a Food :) ?
-        #         pre_food_list_len = len(food_list)
-        #         for food in food_list:
-        #             if food.cell.pos == pacman.cell.pos:
-        #                 food_list.remove(food)
+                # Pacman ate a Food :) ?
+                pre_food_list_len = len(food_list)
+                for food in food_list:
+                    if food.cell.pos == pacman.cell.pos:
+                        food_list.remove(food)
 
-        #         if pre_food_list_len != len(food_list):
-        #             self.update_score(SCORE_BONUS)
+                if pre_food_list_len != len(food_list):
+                    self.update_score(SCORE_BONUS)
 
-        #         # Monsters try to seek and kill Pacman.
-        #         for monster in monster_list:
-        #             old_cell = monster.cell
-        #             monster.cell.monster_leave()
+                # Monsters try to seek and kill Pacman.
+                for monster in monster_list:
+                    old_cell = monster.cell
+                    monster.cell.monster_leave()
 
-        #             path = GraphSearchAStar.search(graph_map, monster.cell.pos, pacman.cell.pos)
-        #             next_cell = cells[path[1][1]][path[1][0]]
-        #             monster.cell = next_cell
+                    path = GraphSearchAStar.search(graph_map, monster.cell.pos, pacman.cell.pos)
+                    next_cell = cells[path[1][1]][path[1][0]]
+                    monster.cell = next_cell
 
-        #             monster.cell.monster_come()
-        #             monster.move(monster.cell.pos)
+                    monster.cell.monster_come()
+                    monster.move(monster.cell.pos)
 
-        #             if old_cell.exist_food():
-        #                 temp_food = Food.Food(self, old_cell.pos, old_cell)
-        #                 temp_food.appear()
+                    if old_cell.exist_food():
+                        temp_food = Food.Food(self, old_cell.pos, old_cell)
+                        temp_food.appear()
 
-        #         # Monster caught Pacman up :( ?
-        #         for monster in monster_list:
-        #             if pacman.cell.pos == monster.cell.pos:
-        #                 self.state = STATE_GAMEOVER
-        #                 pacman_is_caught = True
-        #                 break
-        #         if pacman_is_caught:
-        #             break
+                # Monster caught Pacman up :( ?
+                for monster in monster_list:
+                    if pacman.cell.pos == monster.cell.pos:
+                        self.state = STATE_GAMEOVER
+                        pacman_is_caught = True
+                        break
+                if pacman_is_caught:
+                    break
 
-        #         # Pacman ate all of Foods?
-        #         if len(food_list) == 0:
-        #             self.state = STATE_VICTORY
-        #             break
+                # Pacman ate all of Foods?
+                if len(food_list) == 0:
+                    self.state = STATE_VICTORY
+                    break
 
-        #         # Graphic: "while True" handling.
-        #         pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
-        #         if self.launch_game_event():
-        #             back_home = True
-        #             break
+                # Graphic: "while True" handling.
+                pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
+                if self.launch_game_event():
+                    back_home = True
+                    break
 
-        #     if not back_home:
-        #         pygame.time.delay(2000)
+            if not back_home:
+                pygame.time.delay(2000)
 
 
     def level_5(self):
@@ -421,115 +421,115 @@ class App:
         Monsters just move one step in any valid direction.
         Each step Pacman go, each step Monsters move.
         """
-        # # Read map.
-        # cells, graph_map, pacman_cell, food_cell_list, monster_cell_list = Map.read_map_level_3(
-        #     MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
+        # Read map.
+        cells, graph_map, pacman_cell, food_cell_list, monster_cell_list = Map.read_map_level_3(
+            MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
 
-        # # Initialize Pacman, Foods and Monsters.
-        # food_list = [Food.Food(self, food_cell.pos, food_cell) for food_cell in food_cell_list]
-        # for food in food_list:
-        #     food.appear()
+        # Initialize Pacman, Foods and Monsters.
+        food_list = [Food.Food(self, food_cell.pos, food_cell) for food_cell in food_cell_list]
+        for food in food_list:
+            food.appear()
 
-        # monster_list = [Monster.Monster(self, monster_cell.pos, monster_cell) for monster_cell in monster_cell_list]
-        # for monster in monster_list:
-        #     monster.appear()
+        monster_list = [Monster.Monster(self, monster_cell.pos, monster_cell) for monster_cell in monster_cell_list]
+        for monster in monster_list:
+            monster.appear()
 
-        # pacman = Pacman.Pacman(self, pacman_cell.pos, pacman_cell)
-        # pacman.appear()
+        pacman = Pacman.Pacman(self, pacman_cell.pos, pacman_cell)
+        pacman.appear()
 
-        # # Game.
-        # if self.ready():
-        #     back_home = False
-        #     pacman_is_caught = False
+        # Game.
+        if self.ready():
+            back_home = False
+            pacman_is_caught = False
 
-        #     while True:
-        #         is_backtracking = False
-        #         pacman_old_cell = pacman.cell
+            while True:
+                is_backtracking = False
+                pacman_old_cell = pacman.cell
 
-        #         # Pacman observes all of Cells in its sight then decide the direction to move.
-        #         pacman.cell.pacman_leave()
-        #         pacman.observe(graph_map, 3)
+                # Pacman observes all of Cells in its sight then decide the direction to move.
+                pacman.cell.pacman_leave()
+                pacman.observe(graph_map, 3)
 
-        #         if not pacman.empty_brain() and not pacman.have_food_in_cur_sight() and not pacman.have_monster_in_cur_sight():
-        #             # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
-        #             pacman.cell = pacman.back_track(graph_map)
-        #             is_backtracking = True
-        #         else:
-        #             # Pacman moves with heuristic.
-        #             pacman.cell = HeuristicLocalSearch.local_search(cells, graph_map, pacman.cell)
+                if not pacman.empty_brain() and not pacman.have_food_in_cur_sight() and not pacman.have_monster_in_cur_sight():
+                    # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
+                    pacman.cell = pacman.back_track(graph_map)
+                    is_backtracking = True
+                else:
+                    # Pacman moves with heuristic.
+                    pacman.cell = HeuristicLocalSearch.local_search(cells, graph_map, pacman.cell)
 
-        #         pacman.cell.pacman_come()
-        #         pacman.move(pacman.cell.pos)
-        #         self.update_score(SCORE_PENALTY)
+                pacman.cell.pacman_come()
+                pacman.move(pacman.cell.pos)
+                self.update_score(SCORE_PENALTY)
 
-        #         # Spread the peas.
-        #         if not is_backtracking:
-        #             pacman.spread_peas(pacman_old_cell)
+                # Spread the peas.
+                if not is_backtracking:
+                    pacman.spread_peas(pacman_old_cell)
 
-        #         # Pacman went through Monsters?
-        #         for monster in monster_list:
-        #             if pacman.cell.pos == monster.cell.pos:
-        #                 self.state = STATE_GAMEOVER
-        #                 pacman_is_caught = True
-        #                 break
-        #         if pacman_is_caught:
-        #             break
+                # Pacman went through Monsters?
+                for monster in monster_list:
+                    if pacman.cell.pos == monster.cell.pos:
+                        self.state = STATE_GAMEOVER
+                        pacman_is_caught = True
+                        break
+                if pacman_is_caught:
+                    break
 
-        #         # Pacman ate a Food?
-        #         pre_food_list_len = len(food_list)
-        #         for food in food_list:
-        #             if food.cell.pos == pacman.cell.pos:
-        #                 food_list.remove(food)
+                # Pacman ate a Food?
+                pre_food_list_len = len(food_list)
+                for food in food_list:
+                    if food.cell.pos == pacman.cell.pos:
+                        food_list.remove(food)
 
-        #         if pre_food_list_len != len(food_list):
-        #             self.update_score(SCORE_BONUS)
+                if pre_food_list_len != len(food_list):
+                    self.update_score(SCORE_BONUS)
 
-        #             for i in range(len(pacman.food_cell_in_brain_list)):
-        #                 if pacman.food_cell_in_brain_list[i] == pacman.cell:
-        #                     pacman.food_cell_in_brain_list.remove(pacman.food_cell_in_brain_list[i])
-        #                     pacman.path_to_food_cell_in_brain_list.remove(pacman.path_to_food_cell_in_brain_list[i])
-        #                     break
+                    for i in range(len(pacman.food_cell_in_brain_list)):
+                        if pacman.food_cell_in_brain_list[i] == pacman.cell:
+                            pacman.food_cell_in_brain_list.remove(pacman.food_cell_in_brain_list[i])
+                            pacman.path_to_food_cell_in_brain_list.remove(pacman.path_to_food_cell_in_brain_list[i])
+                            break
 
-        #         # Monsters move randomly.
-        #         for monster in monster_list:
-        #             old_cell = monster.cell
-        #             monster.cell.monster_leave()
+                # Monsters move randomly.
+                for monster in monster_list:
+                    old_cell = monster.cell
+                    monster.cell.monster_leave()
 
-        #             around_cell_list = monster.get_around_cells(graph_map)
-        #             next_cell_index = random.randint(0, len(around_cell_list) - 1)
-        #             next_cell = around_cell_list[next_cell_index]
-        #             monster.cell = next_cell
+                    around_cell_list = monster.get_around_cells(graph_map)
+                    next_cell_index = random.randint(0, len(around_cell_list) - 1)
+                    next_cell = around_cell_list[next_cell_index]
+                    monster.cell = next_cell
 
-        #             monster.cell.monster_come()
+                    monster.cell.monster_come()
 
-        #             monster.move(monster.cell.pos)
+                    monster.move(monster.cell.pos)
 
-        #             if old_cell.exist_food():
-        #                 temp_food = Food.Food(self, old_cell.pos, old_cell)
-        #                 temp_food.appear()
+                    if old_cell.exist_food():
+                        temp_food = Food.Food(self, old_cell.pos, old_cell)
+                        temp_food.appear()
 
-        #         # Monsters caught Pacman up?
-        #         for monster in monster_list:
-        #             if pacman.cell.pos == monster.cell.pos:
-        #                 self.state = STATE_GAMEOVER
-        #                 pacman_is_caught = True
-        #                 break
-        #         if pacman_is_caught:
-        #             break
+                # Monsters caught Pacman up?
+                for monster in monster_list:
+                    if pacman.cell.pos == monster.cell.pos:
+                        self.state = STATE_GAMEOVER
+                        pacman_is_caught = True
+                        break
+                if pacman_is_caught:
+                    break
 
-        #         # Pacman ate all of Foods?
-        #         if len(food_list) == 0:
-        #             self.state = STATE_VICTORY
-        #             break
+                # Pacman ate all of Foods?
+                if len(food_list) == 0:
+                    self.state = STATE_VICTORY
+                    break
 
-        #         # Graphic: "while True" handling.
-        #         pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
-        #         if self.launch_game_event():
-        #             back_home = True
-        #             break
+                # Graphic: "while True" handling.
+                pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
+                if self.launch_game_event():
+                    back_home = True
+                    break
 
-        #     if not back_home:
-        #         pygame.time.delay(2000)
+            if not back_home:
+                pygame.time.delay(2000)
 
 
     def run(self):
