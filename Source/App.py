@@ -10,7 +10,7 @@ import HeuristicLocalSearch
 from Constant import *
 
 
-class MyApp:
+class App:
     ################################################## CORE FUNCTIONS ##################################################
     def __init__(self):
         pygame.init()
