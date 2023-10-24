@@ -106,7 +106,7 @@ SCORE_PENALTY = -1
 
 
 # Font
-FONT = r"../Fonts/8514oem.fon"
+FONT = "Comic Sans MS"
 
 
 # Color
