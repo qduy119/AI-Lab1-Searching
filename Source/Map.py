@@ -1,5 +1,6 @@
 from Constant import *
 from HeuristicLocalSearch import *
+import random
 
 def input_raw(map_input_path):
     try:
@@ -41,10 +42,10 @@ def read_map_level_1(map_input_path):
     return graph_map, pacman_pos, food_pos
 
 
-def read_map_level_2(map_input_path, monster_as_wall: bool):
+def read_map_level_2(map_input_path, ghost_as_wall: bool):
     pacman_pos, raw_map = input_raw(map_input_path)
     food_pos = None
-    monster_pos_list = []
+    ghost_pos_list = []
 
     graph_map = {}
     for y in range(len(raw_map)):
@@ -53,8 +54,8 @@ def read_map_level_2(map_input_path, monster_as_wall: bool):
                 if raw_map[y][x] == 2:
                     food_pos = (x, y)
                 elif raw_map[y][x] == 3:
-                    monster_pos_list.append((x, y))
-                    if monster_as_wall:
+                    ghost_pos_list.append((x, y))
+                    if ghost_as_wall:
                         raw_map[y][x] = 1
 
                 cur = (x, y)
@@ -70,7 +71,7 @@ def read_map_level_2(map_input_path, monster_as_wall: bool):
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
 
-    return graph_map, pacman_pos, food_pos, monster_pos_list
+    return graph_map, pacman_pos, food_pos, ghost_pos_list
 
 def init_cells(raw_map, pacman_pos):
     cells = []
@@ -99,7 +100,7 @@ def read_map_level_3(map_input_path):
     cells, pacman_cell = init_cells(raw_map, pacman_pos)
 
     food_cell_list = []
-    monster_cell_list = []
+    ghost_cell_list = []
     graph_map = {}
 
     for y in range(len(raw_map)):
@@ -107,8 +108,8 @@ def read_map_level_3(map_input_path):
             if raw_map[y][x] != 1:
                 cur = cells[y][x]
 
-                if CState.MONSTER in cur.state:
-                    monster_cell_list.append(cur)
+                if CState.GHOST in cur.state:
+                    ghost_cell_list.append(cur)
                 elif CState.FOOD in cur.state:
                     food_cell_list.append(cur)
 
@@ -124,7 +125,7 @@ def read_map_level_3(map_input_path):
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
 
-    return cells, graph_map, pacman_cell, food_cell_list, monster_cell_list
+    return cells, graph_map, pacman_cell, food_cell_list, ghost_cell_list
 
 
 def read_map_level_4(map_input_path):
@@ -133,7 +134,7 @@ def read_map_level_4(map_input_path):
     cells, pacman_cell = init_cells(raw_map, pacman_pos)
 
     food_cell_list = []
-    monster_cell_list = []
+    ghost_cell_list = []
     graph_cell = {}
     graph_map = {}
 
@@ -143,8 +144,8 @@ def read_map_level_4(map_input_path):
                 c_cur = cells[y][x]
                 cur = (x, y)
 
-                if CState.MONSTER in c_cur.state:
-                    monster_cell_list.append(c_cur)
+                if CState.GHOST in c_cur.state:
+                    ghost_cell_list.append(c_cur)
                 elif CState.FOOD in c_cur.state:
                     food_cell_list.append(c_cur)
 
@@ -169,4 +170,4 @@ def read_map_level_4(map_input_path):
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
 
-    return cells, graph_cell, pacman_cell, graph_map, food_cell_list, monster_cell_list
+    return cells, graph_cell, pacman_cell, graph_map, food_cell_list, ghost_cell_list

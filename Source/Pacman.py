@@ -32,7 +32,7 @@ class Pacman:
 
         # Pacman's sight
         self.food_cell_in_sight_list = []
-        self.monster_cell_in_sight_list = []
+        self.ghost_cell_in_sight_list = []
 
 
     def appear(self):
@@ -63,28 +63,28 @@ class Pacman:
         """
         # Reset Pacman's sight.
         self.food_cell_in_sight_list = []
-        self.monster_cell_in_sight_list = []
+        self.ghost_cell_in_sight_list = []
 
         # Update Pacman's current sight.
         for neighbor_cell in graph_map[self.cell]:
             self.recursive_observe(graph_map, self.cell, neighbor_cell, sight - 1)
 
-        nearby_monster_food_cell_list = []
+        nearby_ghost_food_cell_list = []
         for food_cell_in_sight in self.food_cell_in_sight_list:
-            if self.nearby_monster_cell(food_cell_in_sight):
-                nearby_monster_food_cell_list.append(food_cell_in_sight)
+            if self.nearby_ghost_cell(food_cell_in_sight):
+                nearby_ghost_food_cell_list.append(food_cell_in_sight)
 
         food_cell_index = []
         for index in range(len(self.food_cell_in_brain_list)):
-            if self.nearby_monster_cell(self.food_cell_in_brain_list[index]):
+            if self.nearby_ghost_cell(self.food_cell_in_brain_list[index]):
                 food_cell_index.append(index)
         if len(food_cell_index) != 0:
             for index in reversed(food_cell_index):
                 self.food_cell_in_brain_list.pop(index)
                 self.path_to_food_cell_in_brain_list.pop(index)
 
-        for nearby_monster_food_cell in nearby_monster_food_cell_list:
-            self.food_cell_in_sight_list.remove(nearby_monster_food_cell)
+        for nearby_ghost_food_cell in nearby_ghost_food_cell_list:
+            self.food_cell_in_sight_list.remove(nearby_ghost_food_cell)
 
         # Update Pacman's brain.
         for food_cell_in_sight in self.food_cell_in_sight_list:
@@ -97,9 +97,9 @@ class Pacman:
             self.path_to_food_cell_in_brain_list.append([])
 
 
-    def nearby_monster_cell(self, food_cell):
-        for monster_cell in self.monster_cell_in_sight_list:
-            if abs(monster_cell.pos[0] - food_cell.pos[0]) + abs(monster_cell.pos[1] - food_cell.pos[1]) <= 2:
+    def nearby_ghost_cell(self, food_cell):
+        for ghost_cell in self.ghost_cell_in_sight_list:
+            if abs(ghost_cell.pos[0] - food_cell.pos[0]) + abs(ghost_cell.pos[1] - food_cell.pos[1]) <= 2:
                 return True
 
         return False
@@ -109,8 +109,8 @@ class Pacman:
         return len(self.food_cell_in_brain_list) == 0
 
 
-    def have_monster_in_cur_sight(self):
-        return len(self.monster_cell_in_sight_list) != 0
+    def have_ghost_in_cur_sight(self):
+        return len(self.ghost_cell_in_sight_list) != 0
 
 
     def have_food_in_cur_sight(self):
@@ -139,8 +139,8 @@ class Pacman:
             if cur_cell.exist_food() and cur_cell not in self.food_cell_in_sight_list:
                 self.food_cell_in_sight_list.append(cur_cell)
 
-            if cur_cell.exist_monster() and cur_cell not in self.monster_cell_in_sight_list:
-                self.monster_cell_in_sight_list.append(cur_cell)
+            if cur_cell.exist_ghost() and cur_cell not in self.ghost_cell_in_sight_list:
+                self.ghost_cell_in_sight_list.append(cur_cell)
 
             for neighbor_cell in graph_map[cur_cell]:
                 if neighbor_cell != parent_cell:

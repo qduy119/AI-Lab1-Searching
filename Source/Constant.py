@@ -6,7 +6,6 @@ APP_WIDTH, APP_HEIGHT = 610, 680
 APP_CAPTION = r"Pacman"
 FPS = 60
 
-
 # Map
 MAP_IMG = [r"../Assets/maps/map_1.png",
            r"../Assets/maps/map_2.png",
@@ -16,8 +15,7 @@ MAP_IMG = [r"../Assets/maps/map_1.png",
 MAP_INPUT_TXT = [[r"../Assets/levels/level_1/map_1.txt", r"../Assets/levels/level_1/map_2.txt", r"../Assets/levels/level_1/map_3.txt", r"../Assets/levels/level_1/map_4.txt", r"../Assets/levels/level_1/map_5.txt"],
                  [r"../Assets/levels/level_2/map_1.txt", r"../Assets/levels/level_2/map_2.txt", r"../Assets/levels/level_2/map_3.txt", r"../Assets/levels/level_2/map_4.txt", r"../Assets/levels/level_2/map_5.txt"],
                  [r"../Assets/levels/level_3/map_1.txt", r"../Assets/levels/level_3/map_2.txt", r"../Assets/levels/level_3/map_3.txt", r"../Assets/levels/level_3/map_4.txt", r"../Assets/levels/level_3/map_5.txt"],
-                 [r"../Assets/levels/level_4/map_1.txt", r"../Assets/levels/level_4/map_2.txt", r"../Assets/levels/level_4/map_3.txt", r"../Assets/levels/level_4/map_4.txt", r"../Assets/levels/level_4/map_5.txt"],
-                 [r"../Assets/levels/level_5/map_1.txt", r"../Assets/levels/level_5/map_2.txt", r"../Assets/levels/level_5/map_3.txt", r"../Assets/levels/level_5/map_4.txt", r"../Assets/levels/level_5/map_5.txt"]]
+                 [r"../Assets/levels/level_4/map_1.txt", r"../Assets/levels/level_4/map_2.txt", r"../Assets/levels/level_4/map_3.txt", r"../Assets/levels/level_4/map_4.txt", r"../Assets/levels/level_4/map_5.txt"]]
 MAP_NUM = len(MAP_IMG)
 
 
@@ -33,6 +31,7 @@ STATE_HOME = "home"
 STATE_PLAYING = "playing"
 STATE_ABOUT = "about"
 STATE_LEVEL = "level"
+STATE_MAP = "map"
 STATE_SETTING = "setting"
 STATE_GAMEOVER = "gameover"
 STATE_VICTORY = 'victory'
@@ -46,12 +45,19 @@ ABOUT_POS = pygame.Rect(150, 485, 300, 50)
 EXIT_POS = pygame.Rect(150, 565, 300, 50)
 
 
+# Map screen
+MAP_1_POS = pygame.Rect(150, 320, 300, 50)
+MAP_2_POS = pygame.Rect(150, 390, 300, 50)
+MAP_3_POS = pygame.Rect(150, 460, 300, 50)
+MAP_4_POS = pygame.Rect(150, 530, 300, 50)
+MAP_5_POS = pygame.Rect(150, 600, 300, 50)
+BACK_MAP_POS = pygame.Rect(500, 600, 70, 50)
+
 # Level screen
 LEVEL_1_POS = pygame.Rect(150, 320, 300, 50)
 LEVEL_2_POS = pygame.Rect(150, 390, 300, 50)
 LEVEL_3_POS = pygame.Rect(150, 460, 300, 50)
 LEVEL_4_POS = pygame.Rect(150, 530, 300, 50)
-LEVEL_5_POS = pygame.Rect(150, 600, 300, 50)
 BACK_LEVEL_POS = pygame.Rect(500, 600, 70, 50)
 
 
@@ -106,7 +112,7 @@ SCORE_PENALTY = -1
 
 
 # Font
-FONT = r"../Fonts/8514oem.fon"
+FONT = "Comic Sans MS"
 
 
 # Color
@@ -121,7 +127,7 @@ GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 
 
-# Pacman, Food, Monster animations
+# Pacman, Food, ghost animations
 FOOD_IMAGE = r"../Assets/effects/food.png"
 
 PACMAN_IMAGE = r"../Assets/effects/pacman.png"
@@ -132,7 +138,7 @@ PACMAN_UP = r"../Assets/effects/pacman_up.png"
 
 BLACK_BG = r"../Assets/effects/bg.png"
 
-MONSTER_LEFT_IMAGE = r"../Assets/effects/ghost left.png"
-MONSTER_RIGHT_IMAGE = r"../Assets/effects/ghost right.png"
-MONSTER_UP_IMAGE = r"../Assets/effects/ghost up.png"
-MONSTER_DOWN_IMAGE = r"../Assets/effects/ghost down.png"
+GHOST_LEFT_IMAGE = r"../Assets/effects/ghost left.png"
+GHOST_RIGHT_IMAGE = r"../Assets/effects/ghost right.png"
+GHOST_UP_IMAGE = r"../Assets/effects/ghost up.png"
+GHOST_DOWN_IMAGE = r"../Assets/effects/ghost down.png"

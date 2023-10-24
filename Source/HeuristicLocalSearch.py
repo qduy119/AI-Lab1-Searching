@@ -3,7 +3,7 @@ from enum import Enum
 
 class CState(Enum):
     FOOD = 2
-    MONSTER = 3
+    GHOST = 3
     PACMAN = 4
 
 
@@ -19,8 +19,8 @@ class Cell:
         return CState.FOOD in self.state
 
 
-    def exist_monster(self):
-        return CState.MONSTER in self.state
+    def exist_ghost(self):
+        return CState.GHOST in self.state
 
 
     def reset_heuristic(self):
@@ -31,12 +31,12 @@ class Cell:
         self.state.remove(CState.FOOD)
 
 
-    def monster_leave(self):
-        self.state.remove(CState.MONSTER)
+    def ghost_leave(self):
+        self.state.remove(CState.GHOST)
 
 
-    def monster_come(self):
-        self.state.append(CState.MONSTER)
+    def ghost_come(self):
+        self.state.append(CState.GHOST)
 
 
     def pacman_leave(self):
@@ -70,8 +70,8 @@ def calc_heuristic(cells, graph_map, remembered, start, cur, max_depth):
                 update_heuristic(cells, graph_map, sub_remembered, start, child, 2, "food")
 
             sub_remembered = []
-            if child.exist_monster():
-                update_heuristic(cells, graph_map, sub_remembered, start, child, 2, "monster")
+            if child.exist_ghost():
+                update_heuristic(cells, graph_map, sub_remembered, start, child, 2, "ghost")
 
             calc_heuristic(cells, graph_map, remembered.copy(), start, child, max_depth - 1)
 
@@ -107,12 +107,12 @@ def update_heuristic(cells, graph_map, remembered, start, cur, max_depth, cell_t
         if max_depth == 0: food = 5
         cur.heuristic += food
 
-    if cell_type == "monster":
-        monster = 0
-        if max_depth == 2: monster = float("-inf")
-        if max_depth == 1: monster = float("-inf")
-        if max_depth == 0: monster = -100
-        cur.heuristic += monster
+    if cell_type == "ghost":
+        ghost = 0
+        if max_depth == 2: ghost = float("-inf")
+        if max_depth == 1: ghost = float("-inf")
+        if max_depth == 0: ghost = -100
+        cur.heuristic += ghost
 
     for child in graph_map[cur]:
         if child.pos not in remembered:
