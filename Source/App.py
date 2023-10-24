@@ -110,7 +110,6 @@ class App:
                 self.state = STATE_GAMEOVER
                 pygame.time.delay(2000)
 
-
     def level_2(self):
         """
         Level 2: monsters stand in the place ever (never move around).
@@ -299,7 +298,6 @@ class App:
 
             if not back_home:
                 pygame.time.delay(2000)
-
 
     def level_4(self):
         """
@@ -832,16 +830,18 @@ class App:
     def about_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.about_background, (0, 0))
-        text_surf, text_rect = self.font.render("PROGRAMMERS", TOMATO)
-        self.screen.blit(text_surf, (240, 100))
-        text_surf, text_rect = self.font.render("18127017 - Nguyen Hoang Nhan", TOMATO)
+        text_surf, text_rect = self.font.render("PROGRAMMERS", YELLOW)
+        self.screen.blit(text_surf, (200, 100))
+        text_surf, text_rect = self.font.render("21120440 -     Chu Quang Duy", YELLOW)
         self.screen.blit(text_surf, (150, 150))
-        text_surf, text_rect = self.font.render("18127259 - Kieu Cong Hau", TOMATO)
+        text_surf, text_rect = self.font.render("21120408 -     Dang Tuan Anh", YELLOW)
         self.screen.blit(text_surf, (150, 200))
-        text_surf, text_rect = self.font.render("18127267 - Tran Dinh Sang", TOMATO)
+        text_surf, text_rect = self.font.render("21120426 -     Huynh Phat Dat", YELLOW)
         self.screen.blit(text_surf, (150, 250))
-        text_surf, text_rect = self.font.render("18127268 - Tran Thanh Tam", TOMATO)
+        text_surf, text_rect = self.font.render("21120184 -    Le Thi Minh Thu", YELLOW)
         self.screen.blit(text_surf, (150, 300))
+        text_surf, text_rect = self.font.render("21120198 - Nguyen Thi Lan Anh", YELLOW)
+        self.screen.blit(text_surf, (150, 350))
 
     def level_draw(self):
         self.screen.fill(BLACK)
