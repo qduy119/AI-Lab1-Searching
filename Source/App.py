@@ -78,7 +78,7 @@ class App:
         """
         graph_map, pacman_pos, food_pos = Map.read_map_level_1(
             MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
-        path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
+        path = GraphSearchAStar.search_dijkstra_algorithm(graph_map, pacman_pos, food_pos)
 
         pacman = Pacman.Pacman(self, pacman_pos)
         pacman.appear()
@@ -119,7 +119,7 @@ class App:
         graph_map, pacman_pos, food_pos, monster_pos_list = \
             Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index], monster_as_wall=True)
 
-        path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
+        path = GraphSearchAStar.search_dijkstra_algorithm(graph_map, pacman_pos, food_pos)
 
         pacman = Pacman.Pacman(self, pacman_pos)
         pacman.appear()
@@ -138,7 +138,7 @@ class App:
                     Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index],
                                          monster_as_wall=False)
 
-                path = GraphSearchAStar.search(graph_map, pacman_pos, food_pos)
+                path = GraphSearchAStar.search_dijkstra_algorithm(graph_map, pacman_pos, food_pos)
 
                 if path is not None:
                     path = path[1:]
@@ -383,7 +383,7 @@ class App:
                     old_cell = monster.cell
                     monster.cell.monster_leave()
 
-                    path = GraphSearchAStar.search(graph_map, monster.cell.pos, pacman.cell.pos)
+                    path = GraphSearchAStar.search_dijkstra_algorithm(graph_map, monster.cell.pos, pacman.cell.pos)
                     next_cell = cells[path[1][1]][path[1][0]]
                     monster.cell = next_cell
 
