@@ -22,8 +22,8 @@ MAP_NUM = len(MAP_IMG)
 
 
 # Background
-HOME_BACKGROUND = r"../Assets/bg/home_bg.png"
-ABOUT_BACKGROUND = r"../Assets/bg/about_bg.png"
+HOME_BACKGROUND = r"../Assets/bg/home_bg.jpg"
+ABOUT_BACKGROUND = r"../Assets/bg/about_bg.jpg"
 GAMEOVER_BACKGROUND = r"../Assets/bg/gameover_bg.png"
 VICTORY_BACKGROUND = r"../Assets/bg/victory_bg.jpg"
 
@@ -52,11 +52,11 @@ LEVEL_2_POS = pygame.Rect(150, 390, 300, 50)
 LEVEL_3_POS = pygame.Rect(150, 460, 300, 50)
 LEVEL_4_POS = pygame.Rect(150, 530, 300, 50)
 LEVEL_5_POS = pygame.Rect(150, 600, 300, 50)
-BACK_LEVEL_POS = pygame.Rect(500, 600, 70, 50)
+BACK_LEVEL_POS = pygame.Rect(20, 620, 100, 30)
 
 
 # About screen
-BACK_POS = pygame.Rect(225, 530, 150, 50)
+BACK_POS = pygame.Rect(30, 50, 100, 30)
 
 
 # Setting screen
@@ -112,11 +112,13 @@ FONT = "Comic Sans MS"
 # Color
 BACKGROUND_COLOR = (65, 98, 132)
 LIGHT_GREY = (170, 170, 170)
+BLUE = (223, 190, 0)
+BLUE_LIGHT = (255, 217, 27)
 DARK_GREY = (75, 75, 75)
+RED = (255, 0, 0 )
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-TOMATO = (255, 99, 71)
+WHITE_GREY = (203, 203, 203)
 GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 

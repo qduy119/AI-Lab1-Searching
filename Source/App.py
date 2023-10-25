@@ -617,7 +617,7 @@ class App:
         self.mouse = pygame.mouse.get_pos()
         if HOME_RECT[0] <= self.mouse[0] <= HOME_RECT[0] + HOME_RECT[2] and \
                 HOME_RECT[1] <= self.mouse[1] <= HOME_RECT[1] + HOME_RECT[3]:
-            text_surf, text_rect = self.font.render("HOME", TOMATO)
+            text_surf, text_rect = self.font.render("HOME", WHITE)
             self.screen.blit(text_surf, HOME_RECT)
             pygame.display.update(HOME_RECT)
         else:
@@ -627,7 +627,7 @@ class App:
         if SPEED_RECT[0] <= self.mouse[0] <= SPEED_RECT[0] + SPEED_RECT[2] and \
                 SPEED_RECT[1] <= self.mouse[1] <= SPEED_RECT[1] + SPEED_RECT[3]:
             pygame.draw.rect(self.screen, BLACK, SPEED_RECT)
-            text_surf, text_rect = self.font.render(self.speed_list[self.cur_speed_index][0], TOMATO)
+            text_surf, text_rect = self.font.render(self.speed_list[self.cur_speed_index][0], WHITE)
             self.screen.blit(text_surf, SPEED_RECT)
             pygame.display.update(SPEED_RECT)
         else:
@@ -677,9 +677,9 @@ class App:
                     self.state = STATE_HOME
         self.mouse = pygame.mouse.get_pos()
         if 255 <= self.mouse[0] <= 355 and 620 <= self.mouse[1] <= 670:
-            self.draw_button(self.screen, OK_POS, DARK_GREY, RED, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
         else:
-            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE, WHITE, "OK")
         pygame.time.delay(100)
         pygame.display.update()
 
@@ -696,9 +696,9 @@ class App:
                     self.state = STATE_HOME
         self.mouse = pygame.mouse.get_pos()
         if 255 <= self.mouse[0] <= 355 and 620 <= self.mouse[1] <= 670:
-            self.draw_button(self.screen, OK_POS, DARK_GREY, RED, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
         else:
-            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE, WHITE, "OK")
         pygame.time.delay(100)
         pygame.display.update()
 
@@ -714,9 +714,9 @@ class App:
                     self.state = STATE_HOME
         self.mouse = pygame.mouse.get_pos()
         if 255 <= self.mouse[0] <= 355 and 620 <= self.mouse[1] <= 670:
-            self.draw_button(self.screen, OK_POS, DARK_GREY, RED, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
         else:
-            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE, WHITE, "OK")
         pygame.time.delay(100)
         pygame.display.update()
 
@@ -733,9 +733,9 @@ class App:
                     self.state = STATE_HOME
         self.mouse = pygame.mouse.get_pos()
         if 255 <= self.mouse[0] <= 355 and 620 <= self.mouse[1] <= 670:
-            self.draw_button(self.screen, OK_POS, DARK_GREY, RED, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
         else:
-            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE, WHITE, "OK")
         pygame.time.delay(100)
         pygame.display.update()
 
@@ -752,9 +752,9 @@ class App:
                     self.state = STATE_HOME
         self.mouse = pygame.mouse.get_pos()
         if 255 <= self.mouse[0] <= 355 and 620 <= self.mouse[1] <= 670:
-            self.draw_button(self.screen, OK_POS, DARK_GREY, RED, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
         else:
-            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE, WHITE, "OK")
         pygame.time.delay(100)
         pygame.display.update()
 
@@ -843,18 +843,18 @@ class App:
     def about_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.about_background, (0, 0))
-        text_surf, text_rect = self.font.render("PROGRAMMERS", YELLOW)
-        self.screen.blit(text_surf, (200, 100))
-        text_surf, text_rect = self.font.render("21120184 - Le Thi Minh Thu", YELLOW)
-        self.screen.blit(text_surf, (150, 300))
-        text_surf, text_rect = self.font.render("21120198 - Nguyen Thi Lan Anh", YELLOW)
-        self.screen.blit(text_surf, (150, 350))
-        text_surf, text_rect = self.font.render("21120408 - Dang Tuan Anh", YELLOW)
-        self.screen.blit(text_surf, (150, 200))
-        text_surf, text_rect = self.font.render("21120426 - Huynh Phat Dat", YELLOW)
-        self.screen.blit(text_surf, (150, 250))
-        text_surf, text_rect = self.font.render("21120440 - Chu Quang Duy", YELLOW)
-        self.screen.blit(text_surf, (150, 150))
+        text_surf, text_rect = self.font.render("DEVELOPERS", WHITE)
+        self.screen.blit(text_surf, (230, 50))
+        text_surf, text_rect = self.font.render("21120184 - Le Minh Thu", WHITE)
+        self.screen.blit(text_surf, (150, 170))
+        text_surf, text_rect = self.font.render("21120198 - Nguyen Thi Lan Anh", WHITE)
+        self.screen.blit(text_surf, (150, 220))
+        text_surf, text_rect = self.font.render("21120408 - Dang Tuan Anh", WHITE)
+        self.screen.blit(text_surf, (150, 270))
+        text_surf, text_rect = self.font.render("21120426 - Huynh Phat Dat", WHITE)
+        self.screen.blit(text_surf, (150, 320))
+        text_surf, text_rect = self.font.render("21120440 - Chu Quang Duy", WHITE)
+        self.screen.blit(text_surf, (150, 370))
 
     def level_draw(self):
         self.screen.fill(BLACK)
@@ -884,17 +884,17 @@ class App:
 
         self.mouse = pygame.mouse.get_pos()
         if 255 <= self.mouse[0] <= 355 and 620 <= self.mouse[1] <= 670:
-            self.draw_button(self.screen, OK_POS, DARK_GREY, RED, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
         else:
-            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE, WHITE, "OK")
         if 360 <= self.mouse[0] <= 403.3 and 620 <= self.mouse[1] <= 670:
-            self.draw_triangle_button(self.screen, TRIANGLE_1_POS, DARK_GREY)
+            self.draw_triangle_button(self.screen, TRIANGLE_1_POS, BLUE_LIGHT)
         else:
-            self.draw_triangle_button(self.screen, TRIANGLE_1_POS, LIGHT_GREY)
+            self.draw_triangle_button(self.screen, TRIANGLE_1_POS, BLUE)
         if 206.7 <= self.mouse[0] <= 250 and 620 <= self.mouse[1] <= 670:
-            self.draw_triangle_button(self.screen, TRIANGLE_2_POS, DARK_GREY)
+            self.draw_triangle_button(self.screen, TRIANGLE_2_POS, BLUE_LIGHT)
         else:
-            self.draw_triangle_button(self.screen, TRIANGLE_2_POS, LIGHT_GREY)
+            self.draw_triangle_button(self.screen, TRIANGLE_2_POS, BLUE)
         pygame.display.update()
 
 
@@ -913,14 +913,14 @@ class App:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if 225 <= self.mouse[0] <= 375 and 530 <= self.mouse[1] <= 580:
+                if 30 <= self.mouse[0] <= 130 and 50 <= self.mouse[1] <= 80:
                     self.state = STATE_HOME
 
         self.mouse = pygame.mouse.get_pos()
-        if 225 <= self.mouse[0] <= 375 and 530 <= self.mouse[1] <= 580:
-            self.draw_button(self.screen, BACK_POS, DARK_GREY, RED, "Back")
+        if 30 <= self.mouse[0] <= 130 and 50 <= self.mouse[1] <= 80:
+            self.draw_button(self.screen, BACK_POS, BLUE_LIGHT, WHITE, "Back")
         else:
-            self.draw_button(self.screen, BACK_POS, LIGHT_GREY, BLACK, "Back")
+            self.draw_button(self.screen, BACK_POS, BLUE, WHITE, "Back")
         pygame.display.update()
 
 
@@ -942,7 +942,7 @@ class App:
                 elif 150 <= self.mouse[0] <= 450 and 600 <= self.mouse[1] <= 650:
                     self.state = STATE_PLAYING
                     self.current_level = 5
-                elif 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
+                elif 20 <= self.mouse[0] <= 120 and 620 <= self.mouse[1] <= 650:
                     self.state = STATE_HOME
             elif event.type == pygame.QUIT:
                 pygame.quit()
@@ -950,29 +950,29 @@ class App:
 
         self.mouse = pygame.mouse.get_pos()
         if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
-            self.draw_button(self.screen, LEVEL_1_POS, DARK_GREY, RED, "Level 1")
+            self.draw_button(self.screen, LEVEL_1_POS, BLUE_LIGHT, WHITE, "Level 1")
         else:
-            self.draw_button(self.screen, LEVEL_1_POS, LIGHT_GREY, BLACK, "Level 1")
+            self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "Level 1")
         if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-            self.draw_button(self.screen, LEVEL_2_POS, DARK_GREY, RED, "Level 2")
+            self.draw_button(self.screen, LEVEL_2_POS, BLUE_LIGHT, WHITE, "Level 2")
         else:
-            self.draw_button(self.screen, LEVEL_2_POS, LIGHT_GREY, BLACK, "Level 2")
+            self.draw_button(self.screen, LEVEL_2_POS, BLUE, WHITE, "Level 2")
         if 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
-            self.draw_button(self.screen, LEVEL_3_POS, DARK_GREY, RED, "Level 3")
+            self.draw_button(self.screen, LEVEL_3_POS, BLUE_LIGHT, WHITE, "Level 3")
         else:
-            self.draw_button(self.screen, LEVEL_3_POS, LIGHT_GREY, BLACK, "Level 3")
+            self.draw_button(self.screen, LEVEL_3_POS, BLUE, WHITE, "Level 3")
         if 150 <= self.mouse[0] <= 450 and 530 <= self.mouse[1] <= 580:
-            self.draw_button(self.screen, LEVEL_4_POS, DARK_GREY, RED, "Level 4")
+            self.draw_button(self.screen, LEVEL_4_POS, BLUE_LIGHT, WHITE, "Level 4")
         else:
-            self.draw_button(self.screen, LEVEL_4_POS, LIGHT_GREY, BLACK, "Level 4")
+            self.draw_button(self.screen, LEVEL_4_POS, BLUE, WHITE, "Level 4")
         if 150 <= self.mouse[0] <= 450 and 600 <= self.mouse[1] <= 650:
-            self.draw_button(self.screen, LEVEL_5_POS, DARK_GREY, RED, "Level 5")
+            self.draw_button(self.screen, LEVEL_5_POS, BLUE_LIGHT, WHITE, "Level 5")
         else:
-            self.draw_button(self.screen, LEVEL_5_POS, LIGHT_GREY, BLACK, "Level 5")
-        if 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
-            self.draw_button(self.screen, BACK_LEVEL_POS, DARK_GREY, RED, "Back")
+            self.draw_button(self.screen, LEVEL_5_POS, BLUE, WHITE, "Level 5")
+        if 20 <= self.mouse[0] <= 120 and 620 <= self.mouse[1] <= 650:
+            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE_LIGHT, WHITE, "Back")
         else:
-            self.draw_button(self.screen, BACK_LEVEL_POS, LIGHT_GREY, BLACK, "Back")
+            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE, WHITE, "Back")
         pygame.display.update()
 
     def home_event(self):
@@ -981,9 +981,9 @@ class App:
                 if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 395:
                     self.state = STATE_LEVEL
                 elif 150 <= self.mouse[0] <= 450 and 400 <= self.mouse[1] <= 450:
-                    self.state = STATE_SETTING
-                elif 150 <= self.mouse[0] <= 450 and 480 <= self.mouse[1] <= 530:
                     self.state = STATE_ABOUT
+                elif 150 <= self.mouse[0] <= 450 and 480 <= self.mouse[1] <= 530:
+                    self.state = STATE_SETTING
                 elif 150 <= self.mouse[0] <= 450 and 560 <= self.mouse[1] <= 610:
                     pygame.quit()
                     sys.exit()
@@ -993,19 +993,19 @@ class App:
 
         self.mouse = pygame.mouse.get_pos()
         if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 375:
-            self.draw_button(self.screen, START_POS, DARK_GREY, RED, "Start")
+            self.draw_button(self.screen, START_POS, BLUE_LIGHT, WHITE, "Play")
         else:
-            self.draw_button(self.screen, START_POS, LIGHT_GREY, BLACK, "Start")
-        if 150 <= self.mouse[0] <= 450 and 400 <= self.mouse[1] <= 450:
-            self.draw_button(self.screen, SETTING_POS, DARK_GREY, RED, "Setting")
+            self.draw_button(self.screen, START_POS, BLUE, WHITE, "Play")
+        if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
+            self.draw_button(self.screen, SETTING_POS, BLUE_LIGHT, WHITE, "About")
         else:
-            self.draw_button(self.screen, SETTING_POS, LIGHT_GREY, BLACK, "Setting")
-        if 150 <= self.mouse[0] <= 450 and 480 <= self.mouse[1] <= 530:
-            self.draw_button(self.screen, ABOUT_POS, DARK_GREY, RED, "About")
+            self.draw_button(self.screen, SETTING_POS, BLUE, WHITE, "About")
+        if 150 <= self.mouse[0] <= 450 and 470 <= self.mouse[1] <= 520:
+            self.draw_button(self.screen, ABOUT_POS, BLUE_LIGHT, WHITE, "Settings")
         else:
-            self.draw_button(self.screen, ABOUT_POS, LIGHT_GREY, BLACK, "About")
-        if 150 <= self.mouse[0] <= 450 and 560 <= self.mouse[1] <= 610:
-            self.draw_button(self.screen, EXIT_POS, DARK_GREY, RED, "Exit")
+            self.draw_button(self.screen, ABOUT_POS, BLUE, WHITE, "Settings")
+        if 150 <= self.mouse[0] <= 450 and 550 <= self.mouse[1] <= 600:
+            self.draw_button(self.screen, EXIT_POS, BLUE_LIGHT, WHITE, "Exit")
         else:
-            self.draw_button(self.screen, EXIT_POS, LIGHT_GREY, BLACK, "Exit")
+            self.draw_button(self.screen, EXIT_POS, BLUE, WHITE, "Exit")
         pygame.display.update()
