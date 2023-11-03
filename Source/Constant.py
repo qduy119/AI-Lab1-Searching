@@ -20,8 +20,8 @@ MAP_NUM = len(MAP_IMG)
 
 
 # Background
-HOME_BACKGROUND = r"../Assets/bg/home_bg.png"
-ABOUT_BACKGROUND = r"../Assets/bg/about_bg.png"
+HOME_BACKGROUND = r"../Assets/bg/home_bg.jpg"
+ABOUT_BACKGROUND = r"../Assets/bg/about_bg.jpg"
 GAMEOVER_BACKGROUND = r"../Assets/bg/gameover_bg.png"
 VICTORY_BACKGROUND = r"../Assets/bg/victory_bg.jpg"
 
@@ -40,9 +40,8 @@ STATE_VICTORY = 'victory'
 # Home screen
 HOME_BG_WIDTH, HOME_BG_HEIGHT = APP_WIDTH, APP_HEIGHT - 410
 START_POS = pygame.Rect(150, 325, 300, 50)
-SETTING_POS = pygame.Rect(150, 405, 300, 50)
-ABOUT_POS = pygame.Rect(150, 485, 300, 50)
-EXIT_POS = pygame.Rect(150, 565, 300, 50)
+ABOUT_POS = pygame.Rect(150, 405, 300, 50)
+EXIT_POS = pygame.Rect(150, 485, 300, 50)
 
 
 # Map screen
@@ -62,7 +61,7 @@ BACK_LEVEL_POS = pygame.Rect(500, 600, 70, 50)
 
 
 # About screen
-BACK_POS = pygame.Rect(225, 530, 150, 50)
+BACK_POS = pygame.Rect(30, 50, 100, 30)
 
 
 # Setting screen
@@ -78,8 +77,8 @@ MAP_WIDTH, MAP_HEIGHT = APP_WIDTH - ROW_PADDING, APP_HEIGHT - COL_PADDING
 MAP_POS_X, MAP_POS_Y = ROW_PADDING // 2, COL_PADDING * 2 // 3
 SCORE_POS = (30, 10)
 READY_POS = (APP_WIDTH // 2, 10)
-HOME_RECT = (APP_WIDTH - ROW_PADDING - 20, 10, 40, 20)
-SPEED_RECT = (APP_WIDTH - ROW_PADDING - 150, 10, 110, 20)
+HOME_RECT = (APP_WIDTH - ROW_PADDING - 35, 10, 70, 20)
+SPEED_RECT = (APP_WIDTH - ROW_PADDING - 180, 10, 120, 20)
 
 CELL_SIZE = 20
 ROW, COL = MAP_WIDTH // CELL_SIZE, MAP_HEIGHT // CELL_SIZE
@@ -118,11 +117,13 @@ FONT = "Comic Sans MS"
 # Color
 BACKGROUND_COLOR = (65, 98, 132)
 LIGHT_GREY = (170, 170, 170)
+BLUE = (223, 190, 0)
+BLUE_LIGHT = (255, 217, 27)
 DARK_GREY = (75, 75, 75)
+RED = (255, 0, 0 )
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-TOMATO = (255, 99, 71)
+WHITE_GREY = (203, 203, 203)
 GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
 
