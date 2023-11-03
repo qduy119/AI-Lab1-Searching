@@ -210,11 +210,11 @@ class App:
                 is_backtracking = False
                 pacman_old_cell = pacman.cell
 
-                # Pacman observes all of Cells in its sight then decide the direction to move.
+                # Pacman observes all of Cells in its visitbility  then decide the direction to move.
                 pacman.cell.pacman_leave()
                 pacman.observe(graph_map, 3)
 
-                if not pacman.empty_brain() and not pacman.have_food_in_cur_sight():
+                if not pacman.empty_brain() and not pacman.have_food_in_cur_visible():
                     # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
                     pacman.cell = pacman.back_track(graph_map)
                     is_backtracking = True
@@ -332,16 +332,16 @@ class App:
                 is_backtracking = False
                 pacman_old_cell = pacman.cell
 
-                # Pacman observes all of Cells in its sight then decide the direction to move.
+                # Pacman observes all of Cells in its visitbility then decide the direction to move.
                 pacman.cell.pacman_leave()
                 pacman.observe(graph_cell, 3)
 
-                if not pacman.empty_brain() and not pacman.have_food_in_cur_sight() and not pacman.have_ghost_in_cur_sight():
-                    # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
+                if not pacman.empty_brain() and not pacman.have_food_in_cur_visible() and not pacman.have_ghost_in_cur_visible():
+                   # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
                     pacman.cell = pacman.back_track(graph_cell)
                     is_backtracking = True
                 else:
-                    # Pacman moves with heuristic.
+                    #Pacman moves with heuristic.
                     pacman.cell = HeuristicLocalSearch.local_search(cells, graph_cell, pacman.cell)
                 if pacman.cell == None:
                     self.state = STATE_GAMEOVER
@@ -363,7 +363,7 @@ class App:
                 if not is_backtracking:
                     pacman.spread_peas(pacman_old_cell)
 
-                # Pacman went through Monsters?
+                # Pacman went through Ghost?
                 for ghost in ghost_list:
                     if pacman.cell.pos == ghost.cell.pos:
                         self.state = STATE_GAMEOVER
@@ -381,26 +381,17 @@ class App:
                 if pre_food_list_len != len(food_list):
                     self.update_score(SCORE_BONUS)
 
-                # Ghosts try to seek and kill Pacman. have a ghost moved with A* search
-                ghost_Ai = False
+                # Ghosts try to seek and kill Pacman
+                
                 for ghost in ghost_list:
                     old_cell = ghost.cell
                     ghost.cell.ghost_leave()
-                    next_cell_pos = []
-                    next_cell = None
-                    if not ghost_Ai:
-                        path = GraphSearch.search_dijkstra_algorithm(graph_map, ghost.cell.pos, pacman.cell.pos)
-                        next_cell = cells[path[1][1]][path[1][0]]
-                        ghost_Ai = True
-                    else:
-                        moves = ghost.get_available_moves(cells)                        
-                        if ghost.direction in moves and len(moves) == 2:
-                            next_cell_pos = ghost.get_pos_move(ghost.direction)
-                        else:
-                            next_cell_pos = ghost.get_pos_move(random.choice(moves))
-                        next_cell = cells[next_cell_pos[1]][next_cell_pos[0]]
+                    dictance = []                
+                    moves = graph_cell[ghost.cell]
+                    for move in moves:
+                        dictance.append(abs(move.pos[0]-pacman.cell.pos[0])+abs(move.pos[1]-pacman.cell.pos[1]))
                     
-                    ghost.cell = next_cell
+                    ghost.cell = moves[dictance.index(min(dictance))]
                     ghost.cell.ghost_come()
                     ghost.move(ghost.cell.pos)
 
