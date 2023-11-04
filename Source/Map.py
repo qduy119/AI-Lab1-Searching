@@ -4,90 +4,91 @@ import random
 
 def input_raw(map_input_path):
     try:
-        f = open(map_input_path, "r")
+        file = open(map_input_path, "r")
     except:
         print("Can not read file \'" + map_input_path + "\'. Please check again!")
         return None
 
-    pacman_pos = [int(x) for x in next(f).split()]
-    raw_map = [[int(num) for num in line if num != '\n'] for line in f]
+    map_size = [int(num) for num in file.readline().split()]
+    raw_map = [[int(num) for num in file.readline().strip()] for _ in range(map_size[0])]
+    pacman_pos = [int(num) for num in file.readline().split()]
 
-    return (pacman_pos[0], pacman_pos[1]), raw_map
+    return (map_size[0], map_size[1]), raw_map, (pacman_pos[0], pacman_pos[1])
 
 
 def read_map_level_1(map_input_path):
-    pacman_pos, raw_map = input_raw(map_input_path)
+    map_size, raw_map, pacman_pos = input_raw(map_input_path)
     food_pos = None
 
     graph_map = {}
-    for y in range(len(raw_map)):
-        for x in range(len(raw_map[y])):
-            if raw_map[y][x] != 1:
-                if raw_map[y][x] == 2:
-                    food_pos = (x, y)
+    for i in range(map_size[0]):
+        for j in range(map_size[1]):
+            if raw_map[i][j] != 1:
+                if raw_map[i][j] == 2:
+                    food_pos = (j, i)
 
-                cur = (x, y)
+                cur = (j, i)
                 graph_map[cur] = []
 
-                if x - 1 >= 0 and raw_map[y][x - 1] != 1:
-                    left = (x - 1, y)
+                if j - 1 >= 0 and raw_map[i][j - 1] != 1:
+                    left = (j - 1, i)
                     graph_map[left] = graph_map[left] + [cur]
                     graph_map[cur] = graph_map[cur] + [left]
 
-                if y - 1 >= 0 and raw_map[y - 1][x] != 1:
-                    up = (x, y - 1)
+                if i - 1 >= 0 and raw_map[i - 1][j] != 1:
+                    up = (j, i - 1)
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
-
+    
     return graph_map, pacman_pos, food_pos
 
 
 def read_map_level_2(map_input_path, ghost_as_wall: bool):
-    pacman_pos, raw_map = input_raw(map_input_path)
+    map_size, raw_map, pacman_pos = input_raw(map_input_path)
     food_pos = None
     ghost_pos_list = []
 
     graph_map = {}
-    for y in range(len(raw_map)):
-        for x in range(len(raw_map[y])):
-            if raw_map[y][x] != 1:
-                if raw_map[y][x] == 2:
-                    food_pos = (x, y)
-                elif raw_map[y][x] == 3:
-                    ghost_pos_list.append((x, y))
+    for i in range(map_size[0]):
+        for j in range(map_size[1]):
+            if raw_map[i][j] != 1:
+                if raw_map[i][j] == 2:
+                    food_pos = (j, i)
+                elif raw_map[i][j] == 3:
+                    ghost_pos_list.append((j, i))
                     if ghost_as_wall:
-                        raw_map[y][x] = 1
+                        raw_map[i][j] = 1
 
-                cur = (x, y)
+                cur = (j, i)
                 graph_map[cur] = []
 
-                if x - 1 >= 0 and raw_map[y][x - 1] != 1:
-                    left = (x - 1, y)
+                if j - 1 >= 0 and raw_map[i][j - 1] != 1:
+                    left = (j - 1, i)
                     graph_map[left] = graph_map[left] + [cur]
                     graph_map[cur] = graph_map[cur] + [left]
 
-                if y - 1 >= 0 and raw_map[y - 1][x] != 1:
-                    up = (x, y - 1)
+                if i - 1 >= 0 and raw_map[i - 1][j] != 1:
+                    up = (j, i - 1)
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
 
     return graph_map, pacman_pos, food_pos, ghost_pos_list
 
-def init_cells(raw_map, pacman_pos):
+def init_cells(map_size, raw_map, pacman_pos):
     cells = []
 
-    for y in range(len(raw_map)):
+    for i in range(map_size[0]):
         row = []
-        for x in range(len(raw_map[y])):
-            if raw_map[y][x] != 1:
-                if raw_map[y][x] == 0:
-                    row.append(Cell((x, y), []))
+        for j in range(map_size[1]):
+            if raw_map[i][j] != 1:
+                if raw_map[i][j] == 0:
+                    row.append(Cell((j, i), []))
                 else:
-                    row.append(Cell((x, y), [CState(raw_map[y][x])]))
+                    row.append(Cell((j, i), [CState(raw_map[i][j])]))
 
-                if pacman_pos == (x, y):
-                    row[x].state.append(CState(4))
-                    pacman_cell = row[x]
+                if pacman_pos == (j, i):
+                    row[j].state.append(CState(4))
+                    pacman_cell = row[j]
             else:
                 row.append(None)
         cells.append(row)
@@ -95,18 +96,18 @@ def init_cells(raw_map, pacman_pos):
     return cells, pacman_cell
 
 def read_map_level_3(map_input_path):
-    pacman_pos, raw_map = input_raw(map_input_path)
+    map_size, raw_map, pacman_pos = input_raw(map_input_path)
 
-    cells, pacman_cell = init_cells(raw_map, pacman_pos)
+    cells, pacman_cell = init_cells(map_size, raw_map, pacman_pos)
 
     food_cell_list = []
     ghost_cell_list = []
     graph_map = {}
 
-    for y in range(len(raw_map)):
-        for x in range(len(raw_map[y])):
-            if raw_map[y][x] != 1:
-                cur = cells[y][x]
+    for i in range(map_size[0]):
+        for j in range(map_size[1]):
+            if raw_map[i][j] != 1:
+                cur = cells[i][j]
 
                 if CState.GHOST in cur.state:
                     ghost_cell_list.append(cur)
@@ -115,13 +116,13 @@ def read_map_level_3(map_input_path):
 
                 graph_map[cur] = []
 
-                if x - 1 >= 0 and raw_map[y][x - 1] != 1:
-                    left = cells[y][x - 1]
+                if j - 1 >= 0 and raw_map[i][j - 1] != 1:
+                    left = cells[i][j - 1]
                     graph_map[left] = graph_map[left] + [cur]
                     graph_map[cur] = graph_map[cur] + [left]
 
-                if y - 1 >= 0 and raw_map[y - 1][x] != 1:
-                    up = cells[y - 1][x]
+                if i - 1 >= 0 and raw_map[i - 1][j] != 1:
+                    up = cells[i - 1][j]
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
 
@@ -129,20 +130,20 @@ def read_map_level_3(map_input_path):
 
 
 def read_map_level_4(map_input_path):
-    pacman_pos, raw_map = input_raw(map_input_path)
+    map_size, raw_map, pacman_pos = input_raw(map_input_path)
 
-    cells, pacman_cell = init_cells(raw_map, pacman_pos)
+    cells, pacman_cell = init_cells(map_size, raw_map, pacman_pos)
 
     food_cell_list = []
     ghost_cell_list = []
     graph_cell = {}
     graph_map = {}
 
-    for y in range(len(raw_map)):
-        for x in range(len(raw_map[y])):
-            if raw_map[y][x] != 1:
-                c_cur = cells[y][x]
-                cur = (x, y)
+    for i in range(map_size[0]):
+        for j in range(map_size[1]):
+            if raw_map[i][j] != 1:
+                c_cur = cells[i][j]
+                cur = (j, i)
 
                 if CState.GHOST in c_cur.state:
                     ghost_cell_list.append(c_cur)
@@ -152,21 +153,21 @@ def read_map_level_4(map_input_path):
                 graph_cell[c_cur] = []
                 graph_map[cur] = []
 
-                if x - 1 >= 0 and raw_map[y][x - 1] != 1:
-                    c_left = cells[y][x - 1]
+                if j - 1 >= 0 and raw_map[i][j - 1] != 1:
+                    c_left = cells[i][j - 1]
                     graph_cell[c_left] = graph_cell[c_left] + [c_cur]
                     graph_cell[c_cur] = graph_cell[c_cur] + [c_left]
 
-                    left = (x - 1, y)
+                    left = (j - 1, i)
                     graph_map[left] = graph_map[left] + [cur]
                     graph_map[cur] = graph_map[cur] + [left]
 
-                if y - 1 >= 0 and raw_map[y - 1][x] != 1:
-                    c_up = cells[y - 1][x]
+                if i - 1 >= 0 and raw_map[i - 1][j] != 1:
+                    c_up = cells[i - 1][j]
                     graph_cell[c_up] = graph_cell[c_up] + [c_cur]
                     graph_cell[c_cur] = graph_cell[c_cur] + [c_up]
 
-                    up = (x, y - 1)
+                    up = (j, i - 1)
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
 
