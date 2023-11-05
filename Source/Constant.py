@@ -22,7 +22,7 @@ MAP_NUM = len(MAP_IMG)
 # Background
 HOME_BACKGROUND = r"../Assets/bg/home_bg.jpg"
 ABOUT_BACKGROUND = r"../Assets/bg/about_bg.jpg"
-GAMEOVER_BACKGROUND = r"../Assets/bg/gameover_bg.png"
+GAMEOVER_BACKGROUND = r"../Assets/bg/gameover_bg.jpg"
 VICTORY_BACKGROUND = r"../Assets/bg/victory_bg.jpg"
 
 
@@ -61,11 +61,10 @@ BACK_LEVEL_POS = pygame.Rect(500, 600, 70, 50)
 
 
 # About screen
-BACK_POS = pygame.Rect(30, 50, 100, 30)
-
+BACK_POS = pygame.Rect(450, 450, 100, 40)
 
 # Setting screen
-OK_POS = pygame.Rect(255, 620, 100, 50)
+OK_POS = pygame.Rect(255, 550, 100, 50)
 TRIANGLE_1_POS = [[360, 620], [360, 670], [403.3, 645]]
 TRIANGLE_2_POS = [[250, 620], [250, 670], [206.7, 645]]
 
@@ -78,7 +77,7 @@ MAP_POS_X, MAP_POS_Y = ROW_PADDING // 2, COL_PADDING * 2 // 3
 SCORE_POS = (30, 10)
 READY_POS = (APP_WIDTH // 2, 10)
 HOME_RECT = (APP_WIDTH - ROW_PADDING - 35, 10, 70, 20)
-SPEED_RECT = (APP_WIDTH - ROW_PADDING - 180, 10, 120, 20)
+SPEED_RECT = (APP_WIDTH - ROW_PADDING - 180, 10, 130, 20)
 
 CELL_SIZE = 20
 ROW, COL = MAP_WIDTH // CELL_SIZE, MAP_HEIGHT // CELL_SIZE
@@ -87,19 +86,11 @@ SPEED = 250
 
 
 # Gameover screen
-COIN_IMAGE = r"../Assets/effects/coin.jpg"
 
 COIN_POS = (200, 430)
 COIN_WIDTH, COIN_HEIGHT = (200, 200)
-GAMEOVER_BACKGROUND_WIDTH, GAMEOVER_BACKGROUND_HEIGHT = HOME_BG_WIDTH, HOME_BG_HEIGHT + 300
+GAMEOVER_BACKGROUND_WIDTH, GAMEOVER_BACKGROUND_HEIGHT = HOME_BG_WIDTH - 50, HOME_BG_HEIGHT + 200
 
-
-# Victory screen
-PACMAN1 = r"../Assets/effects/pacman1.png"
-PACMAN2 = r"../Assets/effects/pacman2.png"
-PACMAN3 = r"../Assets/effects/pacman3.png"
-PACMAN4 = r"../Assets/effects/pacman4.png"
-PACMAN5 = r"../Assets/effects/pacman5.png"
 
 VICTORY_WIDTH, VICTORY_HEIGHT = (500, 400)
 PACMAN_WIDTH, PACMAN_HEIGHT = (500, 280)
