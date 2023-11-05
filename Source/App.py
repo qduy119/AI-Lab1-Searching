@@ -8,7 +8,7 @@ import Map
 import GraphSearch
 import HeuristicLocalSearch 
 from Constant import *
-
+import time
 
 class App:
     ################################################## CORE FUNCTIONS ##################################################
@@ -22,6 +22,8 @@ class App:
         self.current_map_index = 0
         self.current_level = 1
         self.score = 0
+        self.total_time = 0
+        self.steps = 0
         self.cur_speed_index = 1
         self.speed_list = [("SPEED: 0.5", 0.5), ("SPEED: 1.0", 1), ("SPEED: 2.0", 2), ("SPEED: 5.0", 5), ("SPEED: 10.0", 10)]
 
@@ -35,21 +37,8 @@ class App:
         self.gameover_background = pygame.image.load(GAMEOVER_BACKGROUND)
         self.gameover_background = pygame.transform.scale(self.gameover_background,
                                                           (GAMEOVER_BACKGROUND_WIDTH, GAMEOVER_BACKGROUND_HEIGHT))
-        self.coin = pygame.image.load(COIN_IMAGE)
-        self.coin = pygame.transform.scale(self.coin, (COIN_WIDTH, COIN_HEIGHT))
         self.victory_background = pygame.image.load(VICTORY_BACKGROUND)
         self.victory_background = pygame.transform.scale(self.victory_background, (VICTORY_WIDTH, VICTORY_HEIGHT))
-        self.pacmans = []
-        self.pacmans.append(pygame.image.load(PACMAN1))
-        self.pacmans[0] = pygame.transform.scale(self.pacmans[0], (PACMAN_WIDTH, PACMAN_HEIGHT))
-        self.pacmans.append(pygame.image.load(PACMAN2))
-        self.pacmans[1] = pygame.transform.scale(self.pacmans[1], (PACMAN_WIDTH, PACMAN_HEIGHT))
-        self.pacmans.append(pygame.image.load(PACMAN3))
-        self.pacmans[2] = pygame.transform.scale(self.pacmans[2], (PACMAN_WIDTH, PACMAN_HEIGHT))
-        self.pacmans.append(pygame.image.load(PACMAN4))
-        self.pacmans[3] = pygame.transform.scale(self.pacmans[3], (PACMAN_WIDTH, PACMAN_HEIGHT))
-        self.pacmans.append(pygame.image.load(PACMAN5))
-        self.pacmans[4] = pygame.transform.scale(self.pacmans[4], (PACMAN_WIDTH, PACMAN_HEIGHT))
 
         self.state = STATE_HOME
         self.clock = pygame.time.Clock()
@@ -60,7 +49,6 @@ class App:
         Launch the Pacman game with the corresponding level and map.
         """
         self.launch_game_draw()
-
         if self.current_level == 1:
             self.level_1()
         elif self.current_level == 2:
@@ -77,16 +65,19 @@ class App:
         """
         graph_map, pacman_pos, food_pos = Map.read_map_level_1(
             MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
+        
+        start_time = time.time()
         path = GraphSearch.search_dijkstra_algorithm(graph_map, pacman_pos, food_pos)
-
+        end_time = time.time()
+        self.total_time = end_time - start_time
         pacman = Pacman.Pacman(self, pacman_pos)
         pacman.appear()
 
         food = Food.Food(self, food_pos)
         food.appear()
-
         if self.ready():
             if path is not None:
+                self.steps = len(path) - 1
                 back_home = False
                 goal = path[-1]
                 path = path[1:-1]
@@ -117,9 +108,11 @@ class App:
         """
         graph_map, pacman_pos, food_pos, ghost_pos_list = \
             Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index], ghost_as_wall=True)
-
+        
+        start_time = time.time()
         path = GraphSearch.search_dijkstra_algorithm(graph_map, pacman_pos, food_pos)
-
+        end_time = time.time()
+        self.total_time = end_time - start_time
         pacman = Pacman.Pacman(self, pacman_pos)
         pacman.appear()
 
@@ -159,6 +152,7 @@ class App:
                     self.state = STATE_GAMEOVER
                     pygame.time.delay(2000)
             else:
+                self.steps = len(path) - 1
                 goal = path[-1]
                 path = path[1:-1]
 
@@ -205,7 +199,9 @@ class App:
         if self.ready():
             back_home = False
             pacman_is_caught = False
-
+            start_time = time.time()
+            end_time = 0
+            steps = 0
             while True:
                 is_backtracking = False
                 pacman_old_cell = pacman.cell
@@ -224,6 +220,7 @@ class App:
 
                 pacman.cell.pacman_come()
                 pacman.move(pacman.cell.pos)
+                steps = steps + 1
                 self.update_score(SCORE_PENALTY)
 
                 # Spread the peas.
@@ -286,7 +283,10 @@ class App:
 
                 # Pacman ate all of Foods?
                 if len(food_list) == 0:
+                    end_time = time.time()
+                    self.total_time = end_time - start_time
                     self.state = STATE_VICTORY
+                    self.steps = steps
                     break
 
                 # Graphic: "while True" handling.
@@ -327,6 +327,9 @@ class App:
         if self.ready():
             back_home = False
             pacman_is_caught = False
+            start_time = time.time()
+            end_time = 0
+            steps = 0
 
             while True:
                 is_backtracking = False
@@ -357,6 +360,7 @@ class App:
 
                 pacman.cell.pacman_come()
                 pacman.move(pacman.cell.pos)
+                steps = steps + 1
                 self.update_score(SCORE_PENALTY)
 
                 # Spread the peas.
@@ -419,7 +423,10 @@ class App:
 
                 # Pacman ate all of Foods?
                 if len(food_list) == 0:
+                    end_time = time.time()
+                    self.total_time = end_time - start_time
                     self.state = STATE_VICTORY
+                    self.steps = steps
                     break
 
                 # Graphic: "while True" handling.
@@ -440,7 +447,7 @@ class App:
             if self.state == STATE_HOME:
                 self.home_draw()
                 self.home_event()
-            elif self.state == STATE_PLAYING:
+            elif self.state == STATE_PLAYING: 
                 self.play_draw()
                 self.launch_pacman_game()
                 self.play_event()
@@ -454,11 +461,11 @@ class App:
                 self.level_draw()
                 self.level_event()
             elif self.state == STATE_GAMEOVER:
-                self.gameover_draw1()
-                self.gameover_draw2()
+                self.gameover_draw()
                 self.gameover_event()
             elif self.state == STATE_VICTORY:
                 self.victory_draw()
+                self.victory_event()
             self.clock.tick(FPS)
 
     ####################################################################################################################
@@ -502,7 +509,7 @@ class App:
         self.mouse = pygame.mouse.get_pos()
         if HOME_RECT[0] <= self.mouse[0] <= HOME_RECT[0] + HOME_RECT[2] and \
                 HOME_RECT[1] <= self.mouse[1] <= HOME_RECT[1] + HOME_RECT[3]:
-            text_surf, text_rect = self.font.render("HOME", WHITE)
+            text_surf, text_rect = self.font.render("HOME", RED)
             self.screen.blit(text_surf, HOME_RECT)
             pygame.display.update(HOME_RECT)
         else:
@@ -512,7 +519,7 @@ class App:
         if SPEED_RECT[0] <= self.mouse[0] <= SPEED_RECT[0] + SPEED_RECT[2] and \
                 SPEED_RECT[1] <= self.mouse[1] <= SPEED_RECT[1] + SPEED_RECT[3]:
             pygame.draw.rect(self.screen, BLACK, SPEED_RECT)
-            text_surf, text_rect = self.font.render(self.speed_list[self.cur_speed_index][0], WHITE)
+            text_surf, text_rect = self.font.render(self.speed_list[self.cur_speed_index][0], RED)
             self.screen.blit(text_surf, SPEED_RECT)
             pygame.display.update(SPEED_RECT)
         else:
@@ -543,61 +550,35 @@ class App:
 
             pygame.time.delay(250)
             pygame.display.update(pygame.draw.rect(self.screen, BLACK, text_rect))
-
+            
             if self.launch_game_event():
                 return False
-
+            
         return True
 
     def victory_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.victory_background, (50, 0))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if 255 <= self.mouse[0] <= 355 and 620 <= self.mouse[1] <= 670:
-                    self.state = STATE_HOME
-        self.mouse = pygame.mouse.get_pos()
-        if 255 <= self.mouse[0] <= 355 and 620 <= self.mouse[1] <= 670:
-            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
-        else:
-            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
-        for i in range(5):
-            self.screen.blit(self.pacmans[i], (50, 350))        
-            pygame.time.delay(100)
-            pygame.display.update()
 
-    def gameover_draw1(self):
+        total_str = "TIME: " + "{:.7f}".format(self.total_time) + "s"
+        text_surf, text_rect = self.font.render(total_str, WHITE)
+        self.screen.blit(text_surf, (200, 360))
+        steps_str = "STEPS: " + str(self.steps)
+        text_surf, text_rect = self.font.render(steps_str, WHITE)
+        self.screen.blit(text_surf, (200, 410))
+        score_str = "SCORE: " + str(self.score)
+        text_surf, text_rect = self.font.render(score_str, WHITE)
+        self.screen.blit(text_surf, (200, 460))
+
+    def gameover_draw(self):
         self.screen.fill(BLACK)
-        self.screen.blit(self.gameover_background, (0, 0))
-        self.screen.blit(self.coin, COIN_POS)
-        pygame.time.delay(350)
-        pygame.display.update()
-
-    def gameover_draw2(self):
-        self.screen.fill(BLACK)
-        self.screen.blit(self.gameover_background, (0, 0))
-        pygame.time.delay(350)
-
-    def gameover_event(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if 200 <= self.mouse[0] <= 400 and 430 <= self.mouse[1] <= 630:
-                    self.state = STATE_HOME
-        self.mouse = pygame.mouse.get_pos()
-
-        pygame.display.update()
+        self.screen.blit(self.gameover_background, (25, 10))
 
     def update_score(self, achived_score):
         """
         Add 'achived_score' to the current score and display onto the screen.
         """
-        text_surf, text_rect = self.font.render("SCORES: " + str(self.score), WHITE)
+        text_surf, text_rect = self.font.render("SCORE: " + str(self.score), WHITE)
         text_rect[0] = SCORE_POS[0]
         text_rect[1] = SCORE_POS[1]
         pygame.draw.rect(self.screen, BLACK, text_rect)
@@ -605,33 +586,13 @@ class App:
 
         self.score += achived_score
 
-        text_surf, text_rect = self.font.render("SCORES: " + str(self.score), WHITE)
+        text_surf, text_rect = self.font.render("SCORE: " + str(self.score), WHITE)
         text_rect[0] = SCORE_POS[0]
         text_rect[1] = SCORE_POS[1]
         pygame.draw.rect(self.screen, BLACK, text_rect)
 
         self.screen.blit(text_surf, SCORE_POS)
         pygame.display.update(text_rect)
-
-    def draw_grids(self):
-        """
-        Draw the grid onto the map for better designing.
-        """
-        for x in range(int(MAP_WIDTH / CELL_SIZE) + 1):
-            self.screen.blit(self.font.render(str(x % 10), WHITE)[0],
-                             (x * CELL_SIZE + MAP_POS_X + CELL_SIZE // 4, MAP_POS_Y - CELL_SIZE))
-
-            pygame.draw.line(self.screen, (107, 107, 107),
-                             (x * CELL_SIZE + MAP_POS_X, MAP_POS_Y),
-                             (x * CELL_SIZE + MAP_POS_X, MAP_HEIGHT + MAP_POS_Y))
-
-        for y in range(int(MAP_HEIGHT / CELL_SIZE) + 1):
-            self.screen.blit(self.font.render(str(y % 10), WHITE)[0],
-                             (MAP_POS_X - CELL_SIZE, y * CELL_SIZE + MAP_POS_Y))
-
-            pygame.draw.line(self.screen, (107, 107, 107),
-                             (MAP_POS_X, y * CELL_SIZE + MAP_POS_Y),
-                             (MAP_WIDTH + MAP_POS_X, y * CELL_SIZE + MAP_POS_Y))
 
     def draw_button(self, surf, rect, button_color, text_color, text):
         pygame.draw.rect(surf, button_color, rect)
@@ -657,8 +618,8 @@ class App:
     def about_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.about_background, (0, 0))
-        text_surf, text_rect = self.font.render("DEVELOPERS", WHITE)
-        self.screen.blit(text_surf, (230, 50))
+        text_surf, text_rect = self.font.render("DEVELOPERS", BLUE_LIGHT, size = 36)
+        self.screen.blit(text_surf, (200, 60))
         text_surf, text_rect = self.font.render("21120184 - Le Minh Thu", WHITE)
         self.screen.blit(text_surf, (150, 170))
         text_surf, text_rect = self.font.render("21120198 - Nguyen Thi Lan Anh", WHITE)
@@ -673,6 +634,7 @@ class App:
     def map_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.level_background, (0, 0))
+
     def level_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.level_background, (0, 0))
@@ -692,11 +654,11 @@ class App:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if 30 <= self.mouse[0] <= 130 and 50 <= self.mouse[1] <= 80:
+                if 450 <= self.mouse[0] <= 550 and 450 <= self.mouse[1] <= 490:
                     self.state = STATE_HOME
 
         self.mouse = pygame.mouse.get_pos()
-        if 30 <= self.mouse[0] <= 130 and 50 <= self.mouse[1] <= 80:
+        if 450 <= self.mouse[0] <= 550 and 450 <= self.mouse[1] <= 490:
             self.draw_button(self.screen, BACK_POS, BLUE_LIGHT, WHITE, "Back")
         else:
             self.draw_button(self.screen, BACK_POS, BLUE, WHITE, "Back")
@@ -778,26 +740,26 @@ class App:
 
         self.mouse = pygame.mouse.get_pos()
         if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
-            self.draw_button(self.screen, LEVEL_1_POS, BLUE_LIGHT, WHITE, "Level 1")
+            self.draw_button(self.screen, LEVEL_1_POS, DARK_GREY, RED, "Level 1")
         else:
             self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "Level 1")
         if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-            self.draw_button(self.screen, LEVEL_2_POS, BLUE_LIGHT, WHITE, "Level 2")
+            self.draw_button(self.screen, LEVEL_2_POS, DARK_GREY, RED, "Level 2")
         else:
             self.draw_button(self.screen, LEVEL_2_POS, BLUE, WHITE, "Level 2")
         if 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
-            self.draw_button(self.screen, LEVEL_3_POS, BLUE_LIGHT, WHITE, "Level 3")
+            self.draw_button(self.screen, LEVEL_3_POS, DARK_GREY, RED, "Level 3")
         else:
             self.draw_button(self.screen, LEVEL_3_POS, BLUE, WHITE, "Level 3")
         if 150 <= self.mouse[0] <= 450 and 530 <= self.mouse[1] <= 580:
-            self.draw_button(self.screen, LEVEL_4_POS, BLUE_LIGHT, WHITE, "Level 4")
+            self.draw_button(self.screen, LEVEL_4_POS, DARK_GREY, RED, "Level 4")
         else:
             self.draw_button(self.screen, LEVEL_4_POS, BLUE, WHITE, "Level 4")
         if 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
             self.draw_button(self.screen, BACK_LEVEL_POS, DARK_GREY, RED, "Back")
         else:
-            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE, WHITE, "Back")
-        pygame.display.update()
+            self.draw_button(self.screen, BACK_LEVEL_POS, LIGHT_GREY, BLACK, "Back")
+        pygame.display.update()   
 
     def home_event(self):
         for event in pygame.event.get():
@@ -826,4 +788,47 @@ class App:
             self.draw_button(self.screen, EXIT_POS, BLUE_LIGHT, WHITE, "Exit")
         else:
             self.draw_button(self.screen, EXIT_POS, BLUE, WHITE, "Exit")
+        pygame.display.update()
+    
+    def gameover_event(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if 255 <= self.mouse[0] <= 355 and 500 <= self.mouse[1] <= 550:
+                    self.state = STATE_HOME
+                if 255 <= self.mouse[0] <= 355 and 570 <= self.mouse[1] <= 620:
+                    pygame.quit()
+                    sys.exit()
+
+        self.mouse = pygame.mouse.get_pos()
+        HOME_POS = pygame.Rect(255, 500, 100, 50)
+        EXIT_POS = pygame.Rect(255, 570, 100, 50)
+        if 255 <= self.mouse[0] <= 355 and 500 <= self.mouse[1] <= 550:
+            self.draw_button(self.screen, HOME_POS, DARK_GREY, RED, "HOME")
+        else:
+            self.draw_button(self.screen, HOME_POS, BLUE, WHITE, "HOME")
+        if 255 <= self.mouse[0] <= 355 and 570 <= self.mouse[1] <= 620:
+            self.draw_button(self.screen, EXIT_POS, DARK_GREY, RED, "EXIT")
+        else:
+            self.draw_button(self.screen, EXIT_POS, BLUE, WHITE, "EXIT")
+        pygame.display.update()
+
+    
+    def victory_event(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if 255 <= self.mouse[0] <= 355 and 550 <= self.mouse[1] <= 600:
+                    self.state = STATE_HOME
+        self.mouse = pygame.mouse.get_pos()
+
+        if 255 <= self.mouse[0] <= 355 and 550 <= self.mouse[1] <= 600:
+            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
+        else:
+            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
+        
         pygame.display.update()
