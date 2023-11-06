@@ -7,16 +7,10 @@ APP_CAPTION = r"Pacman"
 FPS = 60
 
 # Map
-MAP_IMG = [r"../Assets/maps/map_1.png",
-           r"../Assets/maps/map_2.png",
-           r"../Assets/maps/map_3.png",
-           r"../Assets/maps/map_4.png",
-           r"../Assets/maps/map_5.png"]
 MAP_INPUT_TXT = [[r"../Assets/levels/level_1/map_1.txt", r"../Assets/levels/level_1/map_2.txt", r"../Assets/levels/level_1/map_3.txt", r"../Assets/levels/level_1/map_4.txt", r"../Assets/levels/level_1/map_5.txt"],
                  [r"../Assets/levels/level_2/map_1.txt", r"../Assets/levels/level_2/map_2.txt", r"../Assets/levels/level_2/map_3.txt", r"../Assets/levels/level_2/map_4.txt", r"../Assets/levels/level_2/map_5.txt"],
                  [r"../Assets/levels/level_3/map_1.txt", r"../Assets/levels/level_3/map_2.txt", r"../Assets/levels/level_3/map_3.txt", r"../Assets/levels/level_3/map_4.txt", r"../Assets/levels/level_3/map_5.txt"],
                  [r"../Assets/levels/level_4/map_1.txt", r"../Assets/levels/level_4/map_2.txt", r"../Assets/levels/level_4/map_3.txt", r"../Assets/levels/level_4/map_4.txt", r"../Assets/levels/level_4/map_5.txt"]]
-MAP_NUM = len(MAP_IMG)
 
 
 # Background
@@ -61,7 +55,7 @@ BACK_LEVEL_POS = pygame.Rect(500, 600, 70, 50)
 
 
 # About screen
-BACK_POS = pygame.Rect(450, 450, 100, 40)
+BACK_POS = pygame.Rect(450, 540, 100, 40)
 
 # Setting screen
 OK_POS = pygame.Rect(255, 550, 100, 50)
@@ -121,6 +115,8 @@ YELLOW = (255, 255, 0)
 
 # Pacman, Food, ghost animations
 FOOD_IMAGE = r"../Assets/effects/food.png"
+WALL_IMAGE = r"../Assets/effects/wall.png"
+APP_TILE = r"../Assets/effects/tile.png"
 
 PACMAN_IMAGE = r"../Assets/effects/pacman.png"
 PACMAN_LEFT = r"../Assets/effects/pacman_left.png"
@@ -128,9 +124,7 @@ PACMAN_RIGHT = r"../Assets/effects/pacman_right.png"
 PACMAN_DOWN = r"../Assets/effects/pacman_down.png"
 PACMAN_UP = r"../Assets/effects/pacman_up.png"
 
-BLACK_BG = r"../Assets/effects/bg.png"
-
-GHOST_LEFT_IMAGE = r"../Assets/effects/ghost left.png"
-GHOST_RIGHT_IMAGE = r"../Assets/effects/ghost right.png"
-GHOST_UP_IMAGE = r"../Assets/effects/ghost up.png"
-GHOST_DOWN_IMAGE = r"../Assets/effects/ghost down.png"
+GHOST_LEFT_IMAGE = r"../Assets/effects/ghost_left.png"
+GHOST_RIGHT_IMAGE = r"../Assets/effects/ghost_right.png"
+GHOST_UP_IMAGE = r"../Assets/effects/ghost_up.png"
+GHOST_DOWN_IMAGE = r"../Assets/effects/ghost_down.png"

@@ -19,6 +19,7 @@ def input_raw(map_input_path):
 def read_map_level_1(map_input_path):
     map_size, raw_map, pacman_pos = input_raw(map_input_path)
     food_pos = None
+    wall_cell_list = []
 
     graph_map = {}
     for i in range(map_size[0]):
@@ -39,14 +40,17 @@ def read_map_level_1(map_input_path):
                     up = (j, i - 1)
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
-    
-    return graph_map, pacman_pos, food_pos
+            else:
+                wall_cell_list.append((j, i))
+                
+    return graph_map, pacman_pos, food_pos, wall_cell_list
 
 
 def read_map_level_2(map_input_path, ghost_as_wall: bool):
     map_size, raw_map, pacman_pos = input_raw(map_input_path)
     food_pos = None
     ghost_pos_list = []
+    wall_cell_list = []
 
     graph_map = {}
     for i in range(map_size[0]):
@@ -71,8 +75,10 @@ def read_map_level_2(map_input_path, ghost_as_wall: bool):
                     up = (j, i - 1)
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
+            else:
+                wall_cell_list.append((j, i))
 
-    return graph_map, pacman_pos, food_pos, ghost_pos_list
+    return graph_map, pacman_pos, food_pos, ghost_pos_list, wall_cell_list
 
 def init_cells(map_size, raw_map, pacman_pos):
     cells = []
@@ -102,6 +108,7 @@ def read_map_level_3(map_input_path):
 
     food_cell_list = []
     ghost_cell_list = []
+    wall_cell_list = []
     graph_map = {}
 
     for i in range(map_size[0]):
@@ -125,8 +132,10 @@ def read_map_level_3(map_input_path):
                     up = cells[i - 1][j]
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
-
-    return cells, graph_map, pacman_cell, food_cell_list, ghost_cell_list
+            else:
+                wall_cell_list.append((j, i))
+                
+    return cells, graph_map, pacman_cell, food_cell_list, ghost_cell_list, wall_cell_list
 
 
 def read_map_level_4(map_input_path):
@@ -136,6 +145,7 @@ def read_map_level_4(map_input_path):
 
     food_cell_list = []
     ghost_cell_list = []
+    wall_cell_list = []
     graph_cell = {}
     graph_map = {}
 
@@ -170,5 +180,7 @@ def read_map_level_4(map_input_path):
                     up = (j, i - 1)
                     graph_map[up] = graph_map[up] + [cur]
                     graph_map[cur] = graph_map[cur] + [up]
+            else:
+                wall_cell_list.append((j, i))
 
-    return cells, graph_cell, pacman_cell, graph_map, food_cell_list, ghost_cell_list
+    return cells, graph_cell, pacman_cell, graph_map, food_cell_list, ghost_cell_list, wall_cell_list
