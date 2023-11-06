@@ -18,8 +18,8 @@ class Ghost:
         self.ghost_up_image = pygame.transform.scale(self.ghost_up_image, (self.width, self.width))
         self.ghost_down_image = pygame.image.load(GHOST_DOWN_IMAGE)
         self.ghost_down_image = pygame.transform.scale(self.ghost_down_image, (self.width, self.width))
-        self.black_background = pygame.image.load(BLACK_BG)
-        self.black_background = pygame.transform.scale(self.black_background, (CELL_SIZE, CELL_SIZE))
+        self.background = pygame.image.load(APP_TILE)
+        self.background = pygame.transform.scale(self.background, (CELL_SIZE, CELL_SIZE))
         self.cell = cell
         self.initial_cell = cell
     def appear(self):
@@ -91,7 +91,7 @@ class Ghost:
 
         :param new_grid_pos: new position (x, y) on the grid map
         """
-        pygame.display.update(self.app.screen.blit(self.black_background, (self.pixel_pos[0], self.pixel_pos[1])))
+        pygame.display.update(self.app.screen.blit(self.background, (self.pixel_pos[0], self.pixel_pos[1])))
         self.update_direction(new_grid_pos)
         self.grid_pos = new_grid_pos
         self.pixel_pos = self.get_current_pixel_pos()

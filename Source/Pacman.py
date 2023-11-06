@@ -5,7 +5,7 @@ class Pacman:
     ################################################## CORE FUNCTIONS ##################################################
     def __init__(self, app, pos, cell=None):
         self.app = app
-        self.width = CELL_SIZE
+        self.width = CELL_SIZE - 2
         self.grid_pos = [pos[0], pos[1]]
         self.pixel_pos = self.get_current_pixel_pos()
         self.direction = 'right'
@@ -21,8 +21,8 @@ class Pacman:
         self.pacman_down_img = pygame.transform.scale(self.pacman_down_img, (self.width, self.width))
         self.pacman_up_img = pygame.image.load(PACMAN_UP)
         self.pacman_up_img = pygame.transform.scale(self.pacman_up_img, (self.width, self.width))
-        self.black_background = pygame.image.load(BLACK_BG)
-        self.black_background = pygame.transform.scale(self.black_background, (self.width, self.width))
+        self.background = pygame.image.load(APP_TILE)
+        self.background = pygame.transform.scale(self.background, (self.width, self.width))
 
         self.cell = cell
 
@@ -169,7 +169,7 @@ class Pacman:
 
         :param new_grid_pos: new position (x, y) on the grid map
         """
-        pygame.display.update(self.app.screen.blit(self.black_background, (self.pixel_pos[0], self.pixel_pos[1])))
+        pygame.display.update(self.app.screen.blit(self.background, (self.pixel_pos[0], self.pixel_pos[1])))
         self.update_direction(new_grid_pos)
         self.grid_pos = new_grid_pos
         self.pixel_pos = self.get_current_pixel_pos()

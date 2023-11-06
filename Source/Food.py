@@ -5,7 +5,7 @@ class Food:
     ################################################## CORE FUNCTIONS ##################################################
     def __init__(self, app, pos, cell=None):
         self.app = app
-        self.width = 10
+        self.width = CELL_SIZE
         self.grid_pos = [pos[0], pos[1]]
         self.pixel_pos = self.get_current_pixel_pos()
 
