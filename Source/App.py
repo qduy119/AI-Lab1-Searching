@@ -67,7 +67,7 @@ class App:
             MAP_INPUT_TXT[self.current_level - 1][self.current_map_index])
         
         start_time = time.time()
-        path = GraphSearch.search_dijkstra_algorithm(graph_map, pacman_pos, food_pos)
+        path = GraphSearch.search(graph_map, pacman_pos, food_pos)
         end_time = time.time()
         self.total_time = end_time - start_time
         pacman = Pacman.Pacman(self, pacman_pos)
@@ -110,7 +110,7 @@ class App:
             Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index], ghost_as_wall=True)
         
         start_time = time.time()
-        path = GraphSearch.search_dijkstra_algorithm(graph_map, pacman_pos, food_pos)
+        path = GraphSearch.search(graph_map, pacman_pos, food_pos)
         end_time = time.time()
         self.total_time = end_time - start_time
         pacman = Pacman.Pacman(self, pacman_pos)
@@ -130,7 +130,7 @@ class App:
                     Map.read_map_level_2(MAP_INPUT_TXT[self.current_level - 1][self.current_map_index],
                                          ghost_as_wall=False)
 
-                path = GraphSearch.search_dijkstra_algorithm(graph_map, pacman_pos, food_pos)
+                path = GraphSearch.search(graph_map, pacman_pos, food_pos)
 
                 if path is not None:
                     path = path[1:]
@@ -335,21 +335,18 @@ class App:
                 is_backtracking = False
                 pacman_old_cell = pacman.cell
 
-                # Pacman observes all of Cells in its sight then decide the direction to move.
                 pacman.cell.pacman_leave()
                 pacman.observe(graph_cell, 3)
 
                 if not pacman.empty_brain() and not pacman.have_food_in_cur_sight() and not pacman.have_ghost_in_cur_sight():
-                    # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
+
                     pacman.cell = pacman.back_track(graph_cell)
                     is_backtracking = True
                 else:
-                    # Pacman moves with heuristic.
                     pacman.cell = HeuristicLocalSearch.local_search(cells, graph_cell, pacman.cell)
                 if pacman.cell == None:
                     self.state = STATE_GAMEOVER
                     break                
-                # Pacman went through Ghosts?
                 for ghost in ghost_list:
                     if pacman.cell.pos == ghost.cell.pos:
                         self.state = STATE_GAMEOVER
@@ -363,11 +360,9 @@ class App:
                 steps = steps + 1
                 self.update_score(SCORE_PENALTY)
 
-                # Spread the peas.
                 if not is_backtracking:
                     pacman.spread_peas(pacman_old_cell)
 
-                # Pacman went through Monsters?
                 for ghost in ghost_list:
                     if pacman.cell.pos == ghost.cell.pos:
                         self.state = STATE_GAMEOVER
@@ -376,7 +371,6 @@ class App:
                 if pacman_is_caught:
                     break
 
-                # Pacman ate a Food?
                 pre_food_list_len = len(food_list)
                 for food in food_list:
                     if food.cell.pos == pacman.cell.pos:
@@ -385,7 +379,6 @@ class App:
                 if pre_food_list_len != len(food_list):
                     self.update_score(SCORE_BONUS)
 
-                # Ghosts try to seek and kill Pacman. have a ghost moved with A* search
                 ghost_Ai = False
                 for ghost in ghost_list:
                     old_cell = ghost.cell
@@ -393,7 +386,7 @@ class App:
                     next_cell_pos = []
                     next_cell = None
                     if not ghost_Ai:
-                        path = GraphSearch.search_dijkstra_algorithm(graph_map, ghost.cell.pos, pacman.cell.pos)
+                        path = GraphSearch.search(graph_map, ghost.cell.pos, pacman.cell.pos)
                         next_cell = cells[path[1][1]][path[1][0]]
                         ghost_Ai = True
                     else:
@@ -412,7 +405,6 @@ class App:
                         temp_food = Food.Food(self, old_cell.pos, old_cell)
                         temp_food.appear()
 
-                # Ghost caught Pacman up :( ?
                 for ghost in ghost_list:
                     if pacman.cell.pos == ghost.cell.pos:
                         self.state = STATE_GAMEOVER
@@ -421,15 +413,12 @@ class App:
                 if pacman_is_caught:
                     break
 
-                # Pacman ate all of Foods?
                 if len(food_list) == 0:
                     end_time = time.time()
                     self.total_time = end_time - start_time
                     self.state = STATE_VICTORY
                     self.steps = steps
                     break
-
-                # Graphic: "while True" handling.
                 pygame.time.delay(int(SPEED // self.speed_list[self.cur_speed_index][1]))
                 if self.launch_game_event():
                     back_home = True
@@ -620,15 +609,15 @@ class App:
         self.screen.blit(self.about_background, (0, 0))
         text_surf, text_rect = self.font.render("DEVELOPERS", BLUE_LIGHT, size = 36)
         self.screen.blit(text_surf, (200, 60))
-        text_surf, text_rect = self.font.render("21120184 - Le Minh Thu", WHITE)
+        text_surf, text_rect = self.font.render("21120184 - LE MINH THU", WHITE)
         self.screen.blit(text_surf, (150, 170))
-        text_surf, text_rect = self.font.render("21120198 - Nguyen Thi Lan Anh", WHITE)
+        text_surf, text_rect = self.font.render("21120198 - NGUYEN THI LAN ANH", WHITE)
         self.screen.blit(text_surf, (150, 220))
-        text_surf, text_rect = self.font.render("21120408 - Dang Tuan Anh", WHITE)
+        text_surf, text_rect = self.font.render("21120408 - DANG TUAN ANH", WHITE)
         self.screen.blit(text_surf, (150, 270))
-        text_surf, text_rect = self.font.render("21120426 - Huynh Phat Dat", WHITE)
+        text_surf, text_rect = self.font.render("21120426 - HUYNH PHAT DAT", WHITE)
         self.screen.blit(text_surf, (150, 320))
-        text_surf, text_rect = self.font.render("21120440 - Chu Quang Duy", WHITE)
+        text_surf, text_rect = self.font.render("21120440 - CHU QUANG DUY", WHITE)
         self.screen.blit(text_surf, (150, 370))
 
     def map_draw(self):
@@ -654,14 +643,14 @@ class App:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if 450 <= self.mouse[0] <= 550 and 450 <= self.mouse[1] <= 490:
+                if 450 <= self.mouse[0] <= 550 and 580 <= self.mouse[1] <= 620:
                     self.state = STATE_HOME
 
         self.mouse = pygame.mouse.get_pos()
-        if 450 <= self.mouse[0] <= 550 and 450 <= self.mouse[1] <= 490:
-            self.draw_button(self.screen, BACK_POS, BLUE_LIGHT, WHITE, "Back")
+        if 450 <= self.mouse[0] <= 550 and 580 <= self.mouse[1] <= 620:
+            self.draw_button(self.screen, BACK_POS, BLUE_LIGHT, WHITE, "BACK")
         else:
-            self.draw_button(self.screen, BACK_POS, BLUE, WHITE, "Back")
+            self.draw_button(self.screen, BACK_POS, BLUE, WHITE, "BACK")
         pygame.display.update()
 
     def map_event(self):
@@ -691,29 +680,29 @@ class App:
 
         self.mouse = pygame.mouse.get_pos()
         if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
-            self.draw_button(self.screen, MAP_1_POS, DARK_GREY, RED, "Map 1")
+            self.draw_button(self.screen, MAP_1_POS, BLUE_LIGHT, WHITE, "MAP 1")
         else:
-            self.draw_button(self.screen, MAP_1_POS, BLUE, WHITE, "Map 1")
+            self.draw_button(self.screen, MAP_1_POS, BLUE, WHITE, "MAP 1")
         if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-            self.draw_button(self.screen, MAP_2_POS, DARK_GREY, RED, "Map 2")
+            self.draw_button(self.screen, MAP_2_POS, BLUE_LIGHT, WHITE, "MAP 2")
         else:
-            self.draw_button(self.screen, MAP_2_POS, BLUE, WHITE, "Map 2")
+            self.draw_button(self.screen, MAP_2_POS, BLUE, WHITE, "MAP 2")
         if 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
-            self.draw_button(self.screen, MAP_3_POS, DARK_GREY, RED, "Map 3")
+            self.draw_button(self.screen, MAP_3_POS, BLUE_LIGHT, WHITE, "MAP 3")
         else:
-            self.draw_button(self.screen, MAP_3_POS, BLUE, WHITE, "Map 3")
+            self.draw_button(self.screen, MAP_3_POS, BLUE, WHITE, "MAP 3")
         if 150 <= self.mouse[0] <= 450 and 530 <= self.mouse[1] <= 580:
-            self.draw_button(self.screen, MAP_4_POS, DARK_GREY, RED, "Map 4")
+            self.draw_button(self.screen, MAP_4_POS, BLUE_LIGHT, WHITE, "MAP 4")
         else:
-            self.draw_button(self.screen, MAP_4_POS, BLUE, WHITE, "Map 4")
+            self.draw_button(self.screen, MAP_4_POS, BLUE, WHITE, "MAP 4")
         if 150 <= self.mouse[0] <= 450 and 600 <= self.mouse[1] <= 650:
-            self.draw_button(self.screen, MAP_5_POS, DARK_GREY, RED, "Map 5")
+            self.draw_button(self.screen, MAP_5_POS, BLUE_LIGHT, WHITE, "MAP 5")
         else:
-            self.draw_button(self.screen, MAP_5_POS, BLUE, WHITE, "Map 5")
+            self.draw_button(self.screen, MAP_5_POS, BLUE, WHITE, "MAP 5")
         if 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
-            self.draw_button(self.screen, BACK_MAP_POS, DARK_GREY, RED, "Back")
+            self.draw_button(self.screen, BACK_MAP_POS, BLUE_LIGHT, WHITE, "BACK")
         else:
-            self.draw_button(self.screen, BACK_MAP_POS, LIGHT_GREY, BLACK, "Back")
+            self.draw_button(self.screen, BACK_MAP_POS, BLUE, WHITE, "BACK")
         pygame.display.update()
 
     def level_event(self):
@@ -740,25 +729,25 @@ class App:
 
         self.mouse = pygame.mouse.get_pos()
         if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
-            self.draw_button(self.screen, LEVEL_1_POS, DARK_GREY, RED, "Level 1")
+            self.draw_button(self.screen, LEVEL_1_POS, BLUE_LIGHT, WHITE, "LEVEL 1")
         else:
-            self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "Level 1")
+            self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "LEVEL 1")
         if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-            self.draw_button(self.screen, LEVEL_2_POS, DARK_GREY, RED, "Level 2")
+            self.draw_button(self.screen, LEVEL_2_POS, BLUE_LIGHT, WHITE, "LEVEL 2")
         else:
-            self.draw_button(self.screen, LEVEL_2_POS, BLUE, WHITE, "Level 2")
+            self.draw_button(self.screen, LEVEL_2_POS, BLUE, WHITE, "LEVEL 2")
         if 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
-            self.draw_button(self.screen, LEVEL_3_POS, DARK_GREY, RED, "Level 3")
+            self.draw_button(self.screen, LEVEL_3_POS, BLUE_LIGHT, WHITE, "LEVEL 3")
         else:
-            self.draw_button(self.screen, LEVEL_3_POS, BLUE, WHITE, "Level 3")
+            self.draw_button(self.screen, LEVEL_3_POS, BLUE, WHITE, "LEVEL 3")
         if 150 <= self.mouse[0] <= 450 and 530 <= self.mouse[1] <= 580:
-            self.draw_button(self.screen, LEVEL_4_POS, DARK_GREY, RED, "Level 4")
+            self.draw_button(self.screen, LEVEL_4_POS, BLUE_LIGHT, WHITE, "LEVEL 4")
         else:
-            self.draw_button(self.screen, LEVEL_4_POS, BLUE, WHITE, "Level 4")
+            self.draw_button(self.screen, LEVEL_4_POS, BLUE, WHITE, "LEVEL 4")
         if 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
-            self.draw_button(self.screen, BACK_LEVEL_POS, DARK_GREY, RED, "Back")
+            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE_LIGHT, WHITE, "BACK")
         else:
-            self.draw_button(self.screen, BACK_LEVEL_POS, LIGHT_GREY, BLACK, "Back")
+            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE, WHITE, "BACK")
         pygame.display.update()   
 
     def home_event(self):
@@ -777,17 +766,17 @@ class App:
 
         self.mouse = pygame.mouse.get_pos()
         if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 375:
-            self.draw_button(self.screen, START_POS, BLUE_LIGHT, WHITE, "Play")
+            self.draw_button(self.screen, START_POS, BLUE_LIGHT, WHITE, "PLAY")
         else:
-            self.draw_button(self.screen, START_POS, BLUE, WHITE, "Play")
+            self.draw_button(self.screen, START_POS, BLUE, WHITE, "PLAY")
         if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-            self.draw_button(self.screen, ABOUT_POS, BLUE_LIGHT, WHITE, "About")
+            self.draw_button(self.screen, ABOUT_POS, BLUE_LIGHT, WHITE, "ABOUT")
         else:
-            self.draw_button(self.screen, ABOUT_POS, BLUE, WHITE, "About")
+            self.draw_button(self.screen, ABOUT_POS, BLUE, WHITE, "ABOUT")
         if 150 <= self.mouse[0] <= 450 and 470 <= self.mouse[1] <= 520:
-            self.draw_button(self.screen, EXIT_POS, BLUE_LIGHT, WHITE, "Exit")
+            self.draw_button(self.screen, EXIT_POS, BLUE_LIGHT, WHITE, "EXIT")
         else:
-            self.draw_button(self.screen, EXIT_POS, BLUE, WHITE, "Exit")
+            self.draw_button(self.screen, EXIT_POS, BLUE, WHITE, "EXIT")
         pygame.display.update()
     
     def gameover_event(self):
@@ -827,8 +816,8 @@ class App:
         self.mouse = pygame.mouse.get_pos()
 
         if 255 <= self.mouse[0] <= 355 and 550 <= self.mouse[1] <= 600:
-            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE_LIGHT, WHITE, "REPLAY")
         else:
-            self.draw_button(self.screen, OK_POS, LIGHT_GREY, BLACK, "OK")
+            self.draw_button(self.screen, OK_POS, BLUE, WHITE, "REPLAY")
         
         pygame.display.update()

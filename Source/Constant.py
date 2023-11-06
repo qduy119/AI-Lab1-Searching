@@ -61,7 +61,7 @@ BACK_LEVEL_POS = pygame.Rect(500, 600, 70, 50)
 
 
 # About screen
-BACK_POS = pygame.Rect(450, 450, 100, 40)
+BACK_POS = pygame.Rect(450, 580, 100, 40)
 
 # Setting screen
 OK_POS = pygame.Rect(255, 550, 100, 50)
@@ -120,7 +120,7 @@ YELLOW = (255, 255, 0)
 
 
 # Pacman, Food, ghost animations
-FOOD_IMAGE = r"../Assets/effects/food.png"
+FOOD_IMAGE = r"../Assets/effects/food.jpg"
 
 PACMAN_IMAGE = r"../Assets/effects/pacman.png"
 PACMAN_LEFT = r"../Assets/effects/pacman_left.png"
@@ -130,7 +130,7 @@ PACMAN_UP = r"../Assets/effects/pacman_up.png"
 
 BLACK_BG = r"../Assets/effects/bg.png"
 
-GHOST_LEFT_IMAGE = r"../Assets/effects/ghost left.png"
-GHOST_RIGHT_IMAGE = r"../Assets/effects/ghost right.png"
-GHOST_UP_IMAGE = r"../Assets/effects/ghost up.png"
-GHOST_DOWN_IMAGE = r"../Assets/effects/ghost down.png"
+GHOST_LEFT_IMAGE = r"../Assets/effects/red.png"
+GHOST_RIGHT_IMAGE = r"../Assets/effects/red.png"
+GHOST_UP_IMAGE = r"../Assets/effects/red.png"
+GHOST_DOWN_IMAGE = r"../Assets/effects/red.png"
