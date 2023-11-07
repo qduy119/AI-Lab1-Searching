@@ -900,47 +900,8 @@ class App:
         if 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
             self.draw_button(self.screen, BACK_LEVEL_POS, BLUE_LIGHT, WHITE, "BACK")
         else:
-            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE, WHITE, "BACK")
+            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE, WHITE, "Back")
         pygame.display.update()   
-
-    def algorithm_event(self):
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
-                    self.state = STATE_PLAYING
-                    self.algorithm = SEARCH_A
-                elif 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-                    self.state = STATE_PLAYING
-                    self.algorithm = SEARCH_BFS
-                elif 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
-                    self.state = STATE_PLAYING
-                    self.algorithm = SEARCH_DFS
-                elif 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
-                    self.state = STATE_LEVEL
-
-            elif event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        self.mouse = pygame.mouse.get_pos()
-        if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
-            self.draw_button(self.screen, LEVEL_1_POS, BLUE_LIGHT, WHITE, "A* Search")
-        else:
-            self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "A* Search")
-        if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-            self.draw_button(self.screen, LEVEL_2_POS, BLUE_LIGHT, WHITE, "BFS Search")
-        else:
-            self.draw_button(self.screen, LEVEL_2_POS, BLUE, WHITE, "BFS Search")
-        if 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
-            self.draw_button(self.screen, LEVEL_3_POS, BLUE_LIGHT, WHITE, "DFS Search")
-        else:
-            self.draw_button(self.screen, LEVEL_3_POS, BLUE, WHITE, "DFS Search")
-
-        if 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
-            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE_LIGHT, WHITE, "BACK")
-        else:
-            self.draw_button(self.screen, BACK_LEVEL_POS, BLUE, WHITE, "BACK")
-        pygame.display.update()
 
     def home_event(self):
         for event in pygame.event.get():
