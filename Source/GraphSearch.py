@@ -10,7 +10,7 @@ class V(enum.Enum):
     VISITED = 2        # state is explored already
 
 
-def search_dijkstra_algorithm(graph, start, goal):
+def search_A(graph, start, goal):
     min_distance = dict()
     maxValue = int(999999)
     for state in graph:

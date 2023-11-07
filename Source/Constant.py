@@ -29,6 +29,12 @@ STATE_MAP = "map"
 STATE_SETTING = "setting"
 STATE_GAMEOVER = "gameover"
 STATE_VICTORY = 'victory'
+STATE_ALGORITHM = 'algorithm'
+
+#Choose Algorithm
+SEARCH_A = 1
+SEARCH_BFS = 2
+SEARCH_DFS = 3
 
 
 # Home screen
