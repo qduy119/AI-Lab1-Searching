@@ -649,7 +649,7 @@ class App:
         self.screen.blit(self.about_background, (0, 0))
         text_surf, text_rect = self.font.render("DEVELOPERS", BLUE_LIGHT, size = 36)
         self.screen.blit(text_surf, (200, 60))
-        text_surf, text_rect = self.font.render("21120184 - LE MINH THU", WHITE)
+        text_surf, text_rect = self.font.render("21120184 - LE THI MINH THU", WHITE)
         self.screen.blit(text_surf, (150, 170))
         text_surf, text_rect = self.font.render("21120198 - NGUYEN THI LAN ANH", WHITE)
         self.screen.blit(text_surf, (150, 220))
