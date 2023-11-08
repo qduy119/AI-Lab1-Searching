@@ -83,8 +83,8 @@ class Pacman:
                 self.food_cell_in_brain_list.pop(index)
                 self.path_to_food_cell_in_brain_list.pop(index)
 
-        for nearby_ghost_food_cell in nearby_ghost_food_cell_list:
-            self.food_cell_in_sight_list.remove(nearby_ghost_food_cell)
+        #for nearby_ghost_food_cell in nearby_ghost_food_cell_list:
+            #self.food_cell_in_sight_list.remove(nearby_ghost_food_cell)
 
         # Update Pacman's brain.
         for food_cell_in_sight in self.food_cell_in_sight_list:
@@ -106,7 +106,7 @@ class Pacman:
 
 
     def empty_brain(self):
-        return len(self.food_cell_in_brain_list) == 0
+        return len(self.path_to_food_cell_in_brain_list[-1]) == 0
 
 
     def have_ghost_in_cur_sight(self):

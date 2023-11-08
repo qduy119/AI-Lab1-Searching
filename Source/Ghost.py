@@ -34,16 +34,7 @@ class Ghost:
     def get_around_cells(self, graph_map):
         return graph_map[self.cell]
 
-    def get_pos_move(self, next_direction):
-        if next_direction == 'left':
-            return self.grid_pos[0]-1, self.grid_pos[1]
-        if next_direction == 'right':
-            return self.grid_pos[0]+1, self.grid_pos[1]
-        if next_direction == 'up':
-            return self.grid_pos[0], self.grid_pos[1]-1
-        elif next_direction == 'down':
-            return self.grid_pos[0], self.grid_pos[1]+1
-
+   
     def move(self, new_grid_pos):
         """
         Move the ghost to the new position (x, y) on the grid map.
@@ -71,19 +62,7 @@ class Ghost:
         elif new_grid_pos[0] - self.grid_pos[0] == -1:
             self.direction = 'left'
 
-    def get_available_moves(self, cells):
-        avail_moves = []
-        cells_row = len(cells)
-        cells_col = len(cells[0])
-        if self.grid_pos[0]+1 < cells_col and cells[self.grid_pos[1]][self.grid_pos[0]+1]:
-            avail_moves.append('right')
-        if self.grid_pos[0]>0 and cells[self.grid_pos[1]][self.grid_pos[0]-1]:
-            avail_moves.append('left')
-        if self.grid_pos[1]+1 < cells_row and cells[self.grid_pos[1]+1][self.grid_pos[0]]:
-            avail_moves.append('down')
-        if self.grid_pos[1]>0 and cells[self.grid_pos[1]-1][self.grid_pos[0]]:
-            avail_moves.append('up')
-        return avail_moves
+    
 
     def update(self, new_grid_pos):
         """

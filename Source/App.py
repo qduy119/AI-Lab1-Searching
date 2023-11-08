@@ -59,6 +59,7 @@ class App:
         self.state = STATE_HOME
         self.clock = pygame.time.Clock()
         self.mouse = None
+        self.algorithm = SEARCH_A
 
     def launch_pacman_game(self):
         """
@@ -83,17 +84,15 @@ class App:
             MAP_INPUT_TXT[self.current_level - 1][self.current_map_index]
         )
 
-        start_time = time.time()
-        path = self.get_path_search_algorithm(graph_map, pacman_pos, food_pos)
-        end_time = time.time()
-        self.total_time = end_time - start_time
-
         pacman = Pacman.Pacman(self, pacman_pos)
         pacman.appear()
 
         food = Food.Food(self, food_pos)
         food.appear()
-
+        start_time = time.time()
+        path = self.get_path_search_algorithm(graph_map, pacman, food)
+        end_time = time.time()
+        self.total_time = end_time - start_time
         wall_list = [Wall.Wall(self, wall_pos) for wall_pos in wall_cell_list]
         for wall in wall_list:
             wall.appear()
@@ -142,16 +141,16 @@ class App:
             ghost_as_wall=True,
         )
 
-        start_time = time.time()
-        path = self.get_path_search_algorithm(graph_map, pacman_pos, food_pos)
-        end_time = time.time()
-        self.total_time = end_time - start_time
-
         pacman = Pacman.Pacman(self, pacman_pos)
         pacman.appear()
 
         food = Food.Food(self, food_pos)
         food.appear()
+
+        start_time = time.time()
+        path = self.get_path_search_algorithm(graph_map, pacman, food_pos)
+        end_time = time.time()
+        self.total_time = end_time - start_time
 
         wall_list = [Wall.Wall(self, wall_pos) for wall_pos in wall_cell_list]
         for wall in wall_list:
@@ -169,7 +168,7 @@ class App:
                     ghost_as_wall=False,
                 )
 
-                path = self.get_path_search_algorithm(graph_map, pacman_pos, food_pos)
+                path = self.get_path_search_algorithm(graph_map, pacman, food_pos)
 
                 if path is not None:
                     path = path[1:]
@@ -261,7 +260,7 @@ class App:
             pacman_is_caught = False
             start_time = time.time()
             end_time = 0
-            steps = 0
+            self.steps = 0
             while True:
                 is_backtracking = False
                 pacman_old_cell = pacman.cell
@@ -276,13 +275,13 @@ class App:
                     is_backtracking = True
                 else:
                     # Pacman moves with heuristic.
-                    pacman.cell = HeuristicLocalSearch.local_search(
-                        cells, graph_map, pacman.cell
+                    pacman.cell = self.get_path_search_algorithm(
+                        graph_map, pacman, [ghost.cell for ghost in ghost_list]
                     )
 
                 pacman.cell.pacman_come()
                 pacman.move(pacman.cell.pos)
-                steps = steps + 1
+                self.steps = self.steps + 1
                 self.update_score(SCORE_PENALTY)
 
                 # Spread the peas.
@@ -354,7 +353,6 @@ class App:
                     end_time = time.time()
                     self.total_time = end_time - start_time
                     self.state = STATE_VICTORY
-                    self.steps = steps
                     break
 
                 # Graphic: "while True" handling.
@@ -417,7 +415,7 @@ class App:
             pacman_is_caught = False
             start_time = time.time()
             end_time = 0
-            steps = 0
+            self.steps = 0
 
             while True:
                 is_backtracking = False
@@ -437,9 +435,12 @@ class App:
                     is_backtracking = True
                 else:
                     # Pacman moves with heuristic.
-                    pacman.cell = HeuristicLocalSearch.local_search(
-                        cells, graph_cell, pacman.cell
+                    pacman.cell = self.get_path_search_algorithm(#HeuristicLocalSearch.local_search(                
+                        graph_cell, pacman, [ghost.cell for ghost in ghost_list]
                     )
+                    '''
+                    pacman.cell = HeuristicLocalSearch.minimax(graph_cell, pacman.cell, [ghost.cell for ghost in ghost_list], pacman.food_cell_in_sight_list)
+                     '''   
                 if pacman.cell == None:
                     self.state = STATE_GAMEOVER
                     break
@@ -454,7 +455,7 @@ class App:
 
                 pacman.cell.pacman_come()
                 pacman.move(pacman.cell.pos)
-                steps = steps + 1
+                self.steps = self.steps + 1
                 self.update_score(SCORE_PENALTY)
 
                 # Spread the peas.
@@ -480,26 +481,15 @@ class App:
                     self.update_score(SCORE_BONUS)
 
                 # Ghosts try to seek and kill Pacman. have a ghost moved with A* search
-                ghost_Ai = False
+                
                 for ghost in ghost_list:
                     old_cell = ghost.cell
                     ghost.cell.ghost_leave()
-                    next_cell_pos = []
-                    next_cell = None
-                    if not ghost_Ai:
-                        path = self.get_path_search_algorithm(
-                            graph_map, ghost.cell.pos, pacman.cell.pos
-                        )
-                        next_cell = cells[path[1][1]][path[1][0]]
-                        ghost_Ai = True
-                    else:
-                        moves = ghost.get_available_moves(cells)
-                        if ghost.direction in moves and len(moves) == 2:
-                            next_cell_pos = ghost.get_pos_move(ghost.direction)
-                        else:
-                            next_cell_pos = ghost.get_pos_move(random.choice(moves))
-                        next_cell = cells[next_cell_pos[1]][next_cell_pos[0]]
-
+                    next_cell = None 
+                    distance = []  
+                    for i in graph_cell[ghost.cell]:                 
+                        distance.append(abs(i.pos[0]- pacman.cell.pos[0]) + abs(i.pos[1]- pacman.cell.pos[1]))
+                    next_cell = graph_cell[ghost.cell][distance.index(min(distance))]
                     ghost.cell = next_cell
                     ghost.cell.ghost_come()
                     ghost.move(ghost.cell.pos)
@@ -510,7 +500,7 @@ class App:
 
                 # Ghost caught Pacman up :( ?
                 for ghost in ghost_list:
-                    if pacman.cell.pos == ghost.cell.pos:
+                    if pacman.cell.pos == ghost.cell.pos:      
                         self.state = STATE_GAMEOVER
                         pacman_is_caught = True
                         break
@@ -522,7 +512,6 @@ class App:
                     end_time = time.time()
                     self.total_time = end_time - start_time
                     self.state = STATE_VICTORY
-                    self.steps = steps
                     break
 
                 # Graphic: "while True" handling.
@@ -704,7 +693,13 @@ class App:
     def gameover_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.gameover_background, (25, 10))
-
+      
+        steps_str = "STEPS: " + str(self.steps)
+        text_surf, text_rect = self.font.render(steps_str, WHITE)
+        self.screen.blit(text_surf, (150, 500)) 
+        score_str = "SCORE: " + str(self.score)
+        text_surf, text_rect = self.font.render(score_str, WHITE)
+        self.screen.blit(text_surf, (350, 500))
     def update_score(self, achived_score):
         """
         Add 'achived_score' to the current score and display onto the screen.
@@ -906,36 +901,53 @@ class App:
     def algorithm_event(self):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
-                    self.state = STATE_PLAYING
-                    self.algorithm = SEARCH_A
-                elif 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-                    self.state = STATE_PLAYING
-                    self.algorithm = SEARCH_BFS
-                elif 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
-                    self.state = STATE_PLAYING
-                    self.algorithm = SEARCH_DFS
-                elif 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
-                    self.state = STATE_LEVEL
-
+                if self.current_level < 3:
+                    if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
+                        self.state = STATE_PLAYING
+                        self.algorithm = SEARCH_A 
+                    elif 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
+                        self.state = STATE_PLAYING
+                        self.algorithm = SEARCH_BFS
+                    elif 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
+                        self.state = STATE_PLAYING
+                        self.algorithm = SEARCH_DFS
+                
+                else:
+                    if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
+                        self.state = STATE_PLAYING
+                        self.algorithm = SEARCH_LOCAL
+                    elif 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
+                        self.state = STATE_PLAYING
+                        self.algorithm = SEARCH_MINIMAX
+                if 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
+                        self.state = STATE_LEVEL
             elif event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
         self.mouse = pygame.mouse.get_pos()
-        if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
-            self.draw_button(self.screen, LEVEL_1_POS, BLUE_LIGHT, WHITE, "A* Search")
+        if self.current_level< 3:
+            if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
+                self.draw_button(self.screen, LEVEL_1_POS, BLUE_LIGHT, WHITE, "A* Search")
+            else:
+                self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "A* Search")
+            if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
+                self.draw_button(self.screen, LEVEL_2_POS, BLUE_LIGHT, WHITE, "BFS Search")
+            else:
+                self.draw_button(self.screen, LEVEL_2_POS, BLUE, WHITE, "BFS Search")
+            if 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
+                self.draw_button(self.screen, LEVEL_3_POS, BLUE_LIGHT, WHITE, "DFS Search")
+            else:
+                self.draw_button(self.screen, LEVEL_3_POS, BLUE, WHITE, "DFS Search")
         else:
-            self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "A* Search")
-        if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
-            self.draw_button(self.screen, LEVEL_2_POS, BLUE_LIGHT, WHITE, "BFS Search")
-        else:
-            self.draw_button(self.screen, LEVEL_2_POS, BLUE, WHITE, "BFS Search")
-        if 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
-            self.draw_button(self.screen, LEVEL_3_POS, BLUE_LIGHT, WHITE, "DFS Search")
-        else:
-            self.draw_button(self.screen, LEVEL_3_POS, BLUE, WHITE, "DFS Search")
-
+            if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
+                self.draw_button(self.screen, LEVEL_1_POS, BLUE_LIGHT, WHITE, "Local Search")
+            else:
+                self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "Heuristic Local Search")
+            if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
+                self.draw_button(self.screen, LEVEL_2_POS, BLUE_LIGHT, WHITE, "Minimax Search")
+            else:
+                self.draw_button(self.screen, LEVEL_2_POS, BLUE, WHITE, "Minimax Search")
         if 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
             self.draw_button(self.screen, BACK_LEVEL_POS, BLUE_LIGHT, WHITE, "BACK")
         else:
@@ -977,20 +989,20 @@ class App:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if 255 <= self.mouse[0] <= 355 and 500 <= self.mouse[1] <= 550:
+                if 100 <= self.mouse[0] <= 205 and 570 <= self.mouse[1] <= 620:
                     self.state = STATE_HOME
-                if 255 <= self.mouse[0] <= 355 and 570 <= self.mouse[1] <= 620:
+                if 405 <= self.mouse[0] <= 505 and 570 <= self.mouse[1] <= 620:
                     pygame.quit()
                     sys.exit()
 
         self.mouse = pygame.mouse.get_pos()
-        HOME_POS = pygame.Rect(255, 500, 100, 50)
-        EXIT_POS = pygame.Rect(255, 570, 100, 50)
-        if 255 <= self.mouse[0] <= 355 and 500 <= self.mouse[1] <= 550:
+        HOME_POS = pygame.Rect(100, 570, 100, 50)
+        EXIT_POS = pygame.Rect(400, 570, 100, 50)
+        if 100 <= self.mouse[0] <= 155 and 570 <= self.mouse[1] <= 620:
             self.draw_button(self.screen, HOME_POS, BLUE_LIGHT, WHITE, "HOME")
         else:
             self.draw_button(self.screen, HOME_POS, BLUE, WHITE, "HOME")
-        if 255 <= self.mouse[0] <= 355 and 570 <= self.mouse[1] <= 620:
+        if 405 <= self.mouse[0] <= 505 and 570 <= self.mouse[1] <= 620:
             self.draw_button(self.screen, EXIT_POS, BLUE_LIGHT, WHITE, "EXIT")
         else:
             self.draw_button(self.screen, EXIT_POS, BLUE, WHITE, "EXIT")
@@ -1013,12 +1025,16 @@ class App:
 
         pygame.display.update()
 
-    def get_path_search_algorithm(self, graph_map, ghost_cell_pos, pacman_cell_pos):
+    def get_path_search_algorithm(self, graph_map, pacman, food_ghost):
         if self.algorithm == SEARCH_A:
             return GraphSearch.search_A(
-                graph_map, ghost_cell_pos, pacman_cell_pos
+                graph_map, pacman.cell.pos, food_ghost
             )
         elif self.algorithm == SEARCH_BFS:
-            return GraphSearch.search_BFS(graph_map, ghost_cell_pos, pacman_cell_pos)
+            return GraphSearch.search_BFS(graph_map, pacman.cell.pos, food_ghost)
+        elif self.algorithm == SEARCH_DFS:
+            return GraphSearch.search_DFS(graph_map, pacman.cell.pos, food_ghost)
+        elif self.algorithm == SEARCH_LOCAL:
+            return HeuristicLocalSearch.local_search(graph_map, pacman.cell)
         else:
-            return GraphSearch.search_DFS(graph_map, ghost_cell_pos, pacman_cell_pos)
+            return HeuristicLocalSearch.minimax(graph_map, pacman.cell, food_ghost, pacman.food_cell_in_sight_list)
