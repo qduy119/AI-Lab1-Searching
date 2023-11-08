@@ -872,7 +872,8 @@ class App:
                     self.state = STATE_PLAYING
                     self.current_level = 3
                 elif 150 <= self.mouse[0] <= 450 and 530 <= self.mouse[1] <= 580:
-                    self.state = STATE_ALGORITHM
+                    self.state = STATE_PLAYING
+                    self.algorithm = SEARCH_BFS
                     self.current_level = 4
 
                 elif 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
@@ -916,7 +917,7 @@ class App:
                     self.state = STATE_PLAYING
                     self.algorithm = SEARCH_DFS
                 elif 500 <= self.mouse[0] <= 570 and 600 <= self.mouse[1] <= 650:
-                    self.state = STATE_LEVEL
+                    self.state = STATE_PLAYING
 
             elif event.type == pygame.QUIT:
                 pygame.quit()
