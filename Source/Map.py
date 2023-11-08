@@ -68,16 +68,18 @@ def read_map_level_2(map_input_path, ghost_as_wall: bool):
 
                 if j - 1 >= 0 and raw_map[i][j - 1] != 1:
                     left = (j - 1, i)
-                    graph_map[left] = graph_map[left] + [cur]
-                    graph_map[cur] = graph_map[cur] + [left]
+                    if(raw_map[i][j] != 1):
+                        graph_map[left] = graph_map[left] + [cur]
+                        graph_map[cur] = graph_map[cur] + [left]
 
                 if i - 1 >= 0 and raw_map[i - 1][j] != 1:
                     up = (j, i - 1)
-                    graph_map[up] = graph_map[up] + [cur]
-                    graph_map[cur] = graph_map[cur] + [up]
+                    if(raw_map[i][j] != 1):
+                        graph_map[up] = graph_map[up] + [cur]
+                        graph_map[cur] = graph_map[cur] + [up]
             else:
                 wall_cell_list.append((j, i))
-
+                
     return graph_map, pacman_pos, food_pos, ghost_pos_list, wall_cell_list
 
 def init_cells(map_size, raw_map, pacman_pos):
