@@ -90,7 +90,7 @@ class App:
         food = Food.Food(self, food_pos)
         food.appear()
         start_time = time.time()
-        path = self.get_path_search_algorithm(graph_map, pacman, food)
+        path = self.get_path_search_algorithm(graph_map, pacman, food, pacman_pos, food_pos)
         end_time = time.time()
         self.total_time = end_time - start_time
         wall_list = [Wall.Wall(self, wall_pos) for wall_pos in wall_cell_list]
@@ -148,7 +148,7 @@ class App:
         food.appear()
 
         start_time = time.time()
-        path = self.get_path_search_algorithm(graph_map, pacman, food_pos)
+        path = self.get_path_search_algorithm(graph_map, pacman, food_pos, pacman_pos, food_pos)
         end_time = time.time()
         self.total_time = end_time - start_time
 
@@ -168,7 +168,7 @@ class App:
                     ghost_as_wall=False,
                 )
 
-                path = self.get_path_search_algorithm(graph_map, pacman, food_pos)
+                path = self.get_path_search_algorithm(graph_map, pacman, food_pos, pacman_pos, food_pos)
 
                 if path is not None:
                     path = path[1:]
@@ -276,7 +276,7 @@ class App:
                 else:
                     # Pacman moves with heuristic.
                     pacman.cell = self.get_path_search_algorithm(
-                        graph_map, pacman, [ghost.cell for ghost in ghost_list]
+                        graph_map, pacman, [ghost.cell for ghost in ghost_list], pacman_cell, food_cell_list[0]
                     )
 
                 pacman.cell.pacman_come()
@@ -436,7 +436,7 @@ class App:
                 else:
                     # Pacman moves with heuristic.
                     pacman.cell = self.get_path_search_algorithm(#HeuristicLocalSearch.local_search(                
-                        graph_cell, pacman, [ghost.cell for ghost in ghost_list]
+                        graph_cell, pacman, [ghost.cell for ghost in ghost_list], pacman_cell, food_cell_list[0]
                     )
                     '''
                     pacman.cell = HeuristicLocalSearch.minimax(graph_cell, pacman.cell, [ghost.cell for ghost in ghost_list], pacman.food_cell_in_sight_list)
@@ -1027,15 +1027,15 @@ class App:
 
         pygame.display.update()
 
-    def get_path_search_algorithm(self, graph_map, pacman, food_ghost):
+    def get_path_search_algorithm(self, graph_map, pacman, food_ghost, pacman_pos, food_pos):
         if self.algorithm == SEARCH_A:
             return GraphSearch.search_A(
-                graph_map, pacman.cell.pos, food_ghost
+                graph_map, pacman_pos, food_pos
             )
         elif self.algorithm == SEARCH_BFS:
-            return GraphSearch.search_BFS(graph_map, pacman.cell.pos, food_ghost)
+            return GraphSearch.search_BFS(graph_map, pacman_pos, food_pos)
         elif self.algorithm == SEARCH_DFS:
-            return GraphSearch.search_DFS(graph_map, pacman.cell.pos, food_ghost)
+            return GraphSearch.search_DFS(graph_map, pacman_pos, food_pos)
         elif self.algorithm == SEARCH_LOCAL:
             return HeuristicLocalSearch.local_search(graph_map, pacman.cell)
         else:
