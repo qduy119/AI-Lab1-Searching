@@ -5,6 +5,8 @@ class CState(Enum):
     FOOD = 2
     GHOST = 3
     PACMAN = 4
+    EMPTY = 0
+    WALL = 1
 
 
 class Cell:
@@ -70,6 +72,7 @@ def calc_heuristic(graph_map, updated, start, cur, max_depth):
                 update_heuristic( graph_map, sub_updated, start, child, 2, "food")
 
             sub_updated = []
+            sub_updated = []
             if child.exist_ghost():
                 update_heuristic( graph_map, sub_updated, start, child, 2, "ghost")
 
@@ -99,8 +102,8 @@ def update_heuristic( graph_map, updated, start, cur, max_depth, cell_type):
 
     if cell_type == "food":
         food = 0
-        if max_depth == 2: food = 35
-        if max_depth == 1: food = 10
+        if max_depth == 2: food = 40
+        if max_depth == 1: food = 20
         if max_depth == 0: food = 5
         cur.heuristic += food
 

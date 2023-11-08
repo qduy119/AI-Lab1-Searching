@@ -265,11 +265,11 @@ class App:
                 is_backtracking = False
                 pacman_old_cell = pacman.cell
 
-                # Pacman observes all of Cells in its sight then decide the direction to move.
+                # Pacman observes all of Cells in its visitbility  then decide the direction to move.
                 pacman.cell.pacman_leave()
                 pacman.observe(graph_map, 3)
 
-                if not pacman.empty_brain() and not pacman.have_food_in_cur_sight():
+                if not pacman.empty_brain() and not pacman.have_food_in_cur_visible():
                     # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
                     pacman.cell = pacman.back_track(graph_map)
                     is_backtracking = True
@@ -421,7 +421,7 @@ class App:
                 is_backtracking = False
                 pacman_old_cell = pacman.cell
 
-                # Pacman observes all of Cells in its sight then decide the direction to move.
+                # Pacman observes all of Cells in its visitbility then decide the direction to move.
                 pacman.cell.pacman_leave()
                 pacman.observe(graph_cell, 3)
 
@@ -462,7 +462,7 @@ class App:
                 if not is_backtracking:
                     pacman.spread_peas(pacman_old_cell)
 
-                # Pacman went through Monsters?
+                # Pacman went through Ghost?
                 for ghost in ghost_list:
                     if pacman.cell.pos == ghost.cell.pos:
                         self.state = STATE_GAMEOVER
