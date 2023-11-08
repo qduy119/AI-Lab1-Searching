@@ -72,6 +72,7 @@ def calc_heuristic(graph_map, updated, start, cur, max_depth):
                 update_heuristic( graph_map, sub_updated, start, child, 2, "food")
 
             sub_updated = []
+            sub_updated = []
             if child.exist_ghost():
                 update_heuristic( graph_map, sub_updated, start, child, 2, "ghost")
 
@@ -155,8 +156,7 @@ def min_value(graph_map, ghost_list, food_list, score, cur, max_depth):
         for child in graph_map[ghost_list[i]]:                 
             distance.append(abs(child.pos[0]- cur.pos[0]) + abs(child.pos[1]- cur.pos[1]))
         ghost_list[i] = graph_map[ghost_list[i]][distance.index(min(distance))]
-    #if is_dead(cur, ghost_list):
-    #    return score-500
+
     return max([min_value(
         graph_map, ghost_list.copy(), food_list.copy(),score, child, max_depth-1) for child in graph_map[cur]])
  
