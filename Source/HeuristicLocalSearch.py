@@ -143,23 +143,28 @@ def is_dead(pacman, ghost_list):
 def min_value(graph_map, ghost_list, food_list, score, cur, max_depth):    
     if max_depth <= 0 or len(graph_map[cur]) == 0:
         return score  
+    if is_dead(cur, ghost_list):
+        return score-500
     score -=  1 
-    if cur.visited>10:
-        return -500
+    if cur.visited>15:
+        return -1000
     if cur in food_list:
         score += 20
         food_list.remove(cur)
-    if is_dead(cur, ghost_list):
-        return score-500    
+        
     for i in range(len(ghost_list)):
-        distance = []  
-        for child in graph_map[ghost_list[i]]:                 
-            distance.append(abs(child.pos[0]- cur.pos[0]) + abs(child.pos[1]- cur.pos[1]))
+        distance = [max_value(graph_map, score, child, cur, max_depth) for child in graph_map[ghost_list[i]]]
         ghost_list[i] = graph_map[ghost_list[i]][distance.index(min(distance))]
-
+    if is_dead(cur, ghost_list):
+        return score-500 
     return max([min_value(
         graph_map, ghost_list.copy(), food_list.copy(),score, child, max_depth-1) for child in graph_map[cur]])
- 
+
+def max_value(graph_map, score, child, cur, max_depth):
+    if max_depth <= 0 or len(graph_map[cur]) == 0:
+        return score                             
+    return   abs(child.pos[0]- cur.pos[0]) + abs(child.pos[1]- cur.pos[1])
+  
 
 
     
