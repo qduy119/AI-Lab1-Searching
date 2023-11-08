@@ -140,6 +140,7 @@ def is_dead(pacman, ghost_list):
     if pacman in ghost_list:
         return True
     return False
+
 def min_value(graph_map, ghost_list, food_list, score, cur, max_depth):    
     if max_depth <= 0 or len(graph_map[cur]) == 0:
         return score  
@@ -160,10 +161,6 @@ def min_value(graph_map, ghost_list, food_list, score, cur, max_depth):
     return max([min_value(
         graph_map, ghost_list.copy(), food_list.copy(),score, child, max_depth-1) for child in graph_map[cur]])
  
-
-
-    
-
 def minimax(graph_map, pacman_pos, ghost_list, food_list):
     max_f = float("-inf")
     next_step = []

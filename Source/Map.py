@@ -1,5 +1,5 @@
 from Constant import *
-from HeuristicLocalSearch import *
+from HeuristicSearch import *
 import random
 
 def input_raw(map_input_path):
