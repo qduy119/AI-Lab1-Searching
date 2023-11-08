@@ -22,6 +22,7 @@ class Ghost:
         self.background = pygame.transform.scale(self.background, (CELL_SIZE, CELL_SIZE))
         self.cell = cell
         self.initial_cell = cell
+        
     def appear(self):
         """
         Make the ghost appear on the screen.
