@@ -865,6 +865,8 @@ class App:
                     self.current_level = 2
                 elif 150 <= self.mouse[0] <= 450 and 460 <= self.mouse[1] <= 510:
                     self.state = STATE_PLAYING
+                    self.algorithm = SEARCH_LOCAL
+
                     self.current_level = 3
                 elif 150 <= self.mouse[0] <= 450 and 530 <= self.mouse[1] <= 580:
                     self.state = STATE_ALGORITHM
