@@ -162,37 +162,9 @@ class App:
 
         if self.ready():
             back_home = False
-            if path is None:
-                graph_map, pacman_pos, food_pos, ghost_pos_list = Map.read_map_level_2(
-                    MAP_INPUT_TXT[self.current_level - 1][self.current_map_index],
-                    ghost_as_wall=False,
-                )
-
-                path = self.get_path_search_algorithm(graph_map, pacman, food_pos, pacman_pos, food_pos)
-
-                if path is not None:
-                    path = path[1:]
-
-                    for cell in path:
-                        pacman.move(cell)
-                        self.update_score(SCORE_PENALTY)
-
-                        if cell in ghost_pos_list:
-                            break
-
-                        pygame.time.delay(
-                            int(SPEED // self.speed_list[self.cur_speed_index][1])
-                        )
-
-                        if self.launch_game_event():
-                            back_home = True
-                            break
-
-                if not back_home:
-                    self.state = STATE_GAMEOVER
-                    pygame.time.delay(2000)
-            else:
+            if path is not None:
                 self.steps = len(path) - 1
+                back_home = False
                 goal = path[-1]
                 path = path[1:-1]
 
@@ -212,6 +184,10 @@ class App:
                     self.update_score(SCORE_PENALTY + SCORE_BONUS)
                     self.state = STATE_VICTORY
                     pygame.time.delay(2000)
+            else:
+                self.state = STATE_GAMEOVER
+                pygame.time.delay(2000)
+
 
     def level_3(self):
         """
