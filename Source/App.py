@@ -7,7 +7,7 @@ import Ghost
 import Wall
 import Map
 import GraphSearch
-import HeuristicLocalSearch
+import HeuristicSearch
 from Constant import *
 import time
 
@@ -435,12 +435,9 @@ class App:
                     is_backtracking = True
                 else:
                     # Pacman moves with heuristic.
-                    pacman.cell = self.get_path_search_algorithm(#HeuristicLocalSearch.local_search(                
+                    pacman.cell = self.get_path_search_algorithm(             
                         graph_cell, pacman, [ghost.cell for ghost in ghost_list], pacman_cell, food_cell_list[0]
-                    )
-                    '''
-                    pacman.cell = HeuristicLocalSearch.minimax(graph_cell, pacman.cell, [ghost.cell for ghost in ghost_list], pacman.food_cell_in_sight_list)
-                     '''   
+                    )   
                 if pacman.cell == None:
                     self.state = STATE_GAMEOVER
                     break
@@ -700,6 +697,7 @@ class App:
         score_str = "SCORE: " + str(self.score)
         text_surf, text_rect = self.font.render(score_str, WHITE)
         self.screen.blit(text_surf, (350, 500))
+        
     def update_score(self, achived_score):
         """
         Add 'achived_score' to the current score and display onto the screen.
@@ -945,7 +943,7 @@ class App:
             if 150 <= self.mouse[0] <= 450 and 320 <= self.mouse[1] <= 370:
                 self.draw_button(self.screen, LEVEL_1_POS, BLUE_LIGHT, WHITE, "Local Search")
             else:
-                self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "Heuristic Local Search")
+                self.draw_button(self.screen, LEVEL_1_POS, BLUE, WHITE, "Local Search")
             if 150 <= self.mouse[0] <= 450 and 390 <= self.mouse[1] <= 440:
                 self.draw_button(self.screen, LEVEL_2_POS, BLUE_LIGHT, WHITE, "Minimax Search")
             else:
@@ -1037,6 +1035,6 @@ class App:
         elif self.algorithm == SEARCH_DFS:
             return GraphSearch.search_DFS(graph_map, pacman_pos, food_pos)
         elif self.algorithm == SEARCH_LOCAL:
-            return HeuristicLocalSearch.local_search(graph_map, pacman.cell)
+            return HeuristicSearch.local_search(graph_map, pacman.cell)
         else:
-            return HeuristicLocalSearch.minimax(graph_map, pacman.cell, food_ghost, pacman.food_cell_in_sight_list)
+            return HeuristicSearch.minimax(graph_map, pacman.cell, food_ghost, pacman.food_cell_in_sight_list)

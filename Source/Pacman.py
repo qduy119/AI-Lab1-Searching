@@ -67,24 +67,7 @@ class Pacman:
 
         # Update Pacman's current sight.
         for neighbor_cell in graph_map[self.cell]:
-            self.recursive_observe(graph_map, self.cell, neighbor_cell, sight-1)
-        print(self.cell.pos, len(self.food_cell_in_sight_list))
-        '''nearby_ghost_food_cell_list = []
-        for food_cell_in_sight in self.food_cell_in_sight_list:
-            if self.nearby_ghost_cell(food_cell_in_sight):
-                nearby_ghost_food_cell_list.append(food_cell_in_sight)
-
-        food_cell_index = []
-        for index in range(len(self.food_cell_in_brain_list)):
-            if self.nearby_ghost_cell(self.food_cell_in_brain_list[index]):
-                food_cell_index.append(index)
-        if len(food_cell_index) != 0:
-            for index in reversed(food_cell_index):
-                self.food_cell_in_brain_list.pop(index)
-                self.path_to_food_cell_in_brain_list.pop(index)
-
-        #for nearby_ghost_food_cell in nearby_ghost_food_cell_list:
-        #    self.food_cell_in_sight_list.remove(nearby_ghost_food_cell)'''
+            self.recursive_observe(graph_map, self.cell, neighbor_cell, sight - 1)
 
         # Update Pacman's brain.
         for food_cell_in_sight in self.food_cell_in_sight_list:
@@ -95,7 +78,6 @@ class Pacman:
                     break
             self.food_cell_in_brain_list.append(food_cell_in_sight)
             self.path_to_food_cell_in_brain_list.append([])
-        print(self.cell.pos, len(self.food_cell_in_sight_list))
 
 
     def nearby_ghost_cell(self, food_cell):
