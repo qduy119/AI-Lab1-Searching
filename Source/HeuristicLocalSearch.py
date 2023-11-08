@@ -135,3 +135,6 @@ def local_search(cells, graph_map, pacman_pos):
             next_step = child
 
     return next_step
+
+
+
