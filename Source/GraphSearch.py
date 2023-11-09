@@ -1,12 +1,9 @@
 import queue
 import enum
 from collections import deque
-from tkinter.tix import INTEGER
-import sys
 
 class V(enum.Enum):
     NOT_VISITED = 0     # state is not visited yet
-    FRONTIER = 1        # state is in frontier
     VISITED = 2        # state is explored already
 
 
@@ -18,7 +15,7 @@ def search_A(graph, start, goal):
 
     node = (heuristic(start, goal), start, None)  
     frontier = queue.PriorityQueue()
-    explored = [] #luu lai duong di
+    explored = [] # path
     min_distance[start] = heuristic(start, goal) 
 
     frontier.put(node)
@@ -27,53 +24,50 @@ def search_A(graph, start, goal):
         nodeFirst = frontier.get()
         
         if nodeFirst[0] > min_distance[nodeFirst[1]]:
-            continue #skip 
+            continue # skip 
         
-        explored.append((nodeFirst[1], nodeFirst[2])) #thêm vào đường đi 
-        if nodeFirst[1] == goal:      
-            return get_path(explored)    # success
-        for child_state in graph[nodeFirst[1]]: #danh sach ke
-            h_state = heuristic(nodeFirst[1], goal)
+        explored.append((nodeFirst[1], nodeFirst[2])) # add to path 
+        if nodeFirst[1] == goal:      # if done
+            return get_path(explored)   
+        for child_state in graph[nodeFirst[1]]: # loop for adjacent list
+            h_score = heuristic(nodeFirst[1], goal)
             h_child_score = heuristic(child_state, goal)
-            prev_distance = nodeFirst[0] - h_state
-            h_score = prev_distance + 1 + h_child_score
-            if min_distance[child_state] > h_score:
-                min_distance[child_state] = h_score
+            prev_distance = nodeFirst[0] - h_score
+            f_score = prev_distance + 1 + h_child_score
+            if min_distance[child_state] > f_score:
+                min_distance[child_state] = f_score
                 frontier.put((min_distance[child_state], child_state, nodeFirst[1])) 
-    return None     # failure
+    return None   
 
 
 def search_BFS(graph, start, goal) :
     visited = dict()
     for state in graph :
-        visited[state] = V.NOT_VISITED #Khoi tao trang thai ban dau
+        visited[state] = V.NOT_VISITED # init
     queueBfs = queue.Queue()
     node  = (start, None)
     queueBfs.put(node)
-    # tao mang luu tien trinh
-    explored = []
+    explored = [] # path
     
     while not queueBfs.empty():
         nodeCur = queueBfs.get()
         # already visited
         visited[nodeCur[0]] = V.VISITED
-        #save road
+        # add to path
         explored.append((nodeCur[0], nodeCur[1]))
         
-        # check successfully
+        # if done
         if goal == nodeCur[0] :
             return get_path(explored)
         
         for node_child in graph[nodeCur[0]] :
             if(visited[node_child] == V.NOT_VISITED) :
                  queueBfs.put((node_child, nodeCur[0]))
-    return None # failure
+    return None
   
 def DFS_Algorithm(node, path, visited, goal, graph):
-    #path : save road
-    #node : include nodecur, parent_node
     visited[node[0]] = V.VISITED
-    #save road
+    # add to path
     path.append((node[0], node[1]))
     
     if goal == node[0] :
@@ -88,10 +82,10 @@ def search_DFS(graph, start, goal) :
     path = []
     visited = dict()
     for node in graph :
-        visited[node] = V.NOT_VISITED #init value for node
+        visited[node] = V.NOT_VISITED # init
         
     if not DFS_Algorithm((start, None), path, visited, goal, graph) :
-        return None #failure
+        return None
     
     return get_path(path)
 
@@ -110,5 +104,5 @@ def get_path(explored):
 
     return list(path)
 
-def heuristic(state, goal):      # Manhattan
+def heuristic(state, goal):      # Manhattan Distance
     return int(abs(state[0] - goal[0]) + abs(state[1] - goal[1]))
