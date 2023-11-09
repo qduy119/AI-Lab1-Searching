@@ -89,10 +89,7 @@ class App:
 
         food = Food.Food(self, food_pos)
         food.appear()
-        start_time = time.time()
         path = self.get_path_search_algorithm(graph_map, pacman, food, pacman_pos, food_pos)
-        end_time = time.time()
-        self.total_time = end_time - start_time
         wall_list = [Wall.Wall(self, wall_pos) for wall_pos in wall_cell_list]
         for wall in wall_list:
             wall.appear()
@@ -104,6 +101,7 @@ class App:
                 goal = path[-1]
                 path = path[1:-1]
 
+                start_time = time.time()
                 for cell in path:
                     pacman.move(cell)
                     self.update_score(SCORE_PENALTY)
@@ -117,6 +115,8 @@ class App:
 
                 if not back_home:
                     pacman.move(goal)
+                    end_time = time.time()
+                    self.total_time = end_time - start_time
                     self.update_score(SCORE_PENALTY + SCORE_BONUS)
                     self.state = STATE_VICTORY
                     pygame.time.delay(2000)
@@ -137,8 +137,7 @@ class App:
             ghost_pos_list,
             wall_cell_list,
         ) = Map.read_map_level_2(
-            MAP_INPUT_TXT[self.current_level - 1][self.current_map_index],
-            ghost_as_wall=True,
+            MAP_INPUT_TXT[self.current_level - 1][self.current_map_index]
         )
 
         pacman = Pacman.Pacman(self, pacman_pos)
@@ -147,10 +146,7 @@ class App:
         food = Food.Food(self, food_pos)
         food.appear()
 
-        start_time = time.time()
         path = self.get_path_search_algorithm(graph_map, pacman, food_pos, pacman_pos, food_pos)
-        end_time = time.time()
-        self.total_time = end_time - start_time
 
         wall_list = [Wall.Wall(self, wall_pos) for wall_pos in wall_cell_list]
         for wall in wall_list:
@@ -168,6 +164,7 @@ class App:
                 goal = path[-1]
                 path = path[1:-1]
 
+                start_time = time.time()
                 for cell in path:
                     pacman.move(cell)
                     self.update_score(SCORE_PENALTY)
@@ -181,6 +178,8 @@ class App:
 
                 if not back_home:
                     pacman.move(goal)
+                    end_time = time.time()
+                    self.total_time = end_time - start_time
                     self.update_score(SCORE_PENALTY + SCORE_BONUS)
                     self.state = STATE_VICTORY
                     pygame.time.delay(2000)
