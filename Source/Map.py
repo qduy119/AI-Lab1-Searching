@@ -46,7 +46,7 @@ def read_map_level_1(map_input_path):
     return graph_map, pacman_pos, food_pos, wall_cell_list
 
 
-def read_map_level_2(map_input_path, ghost_as_wall: bool):
+def read_map_level_2(map_input_path):
     map_size, raw_map, pacman_pos = input_raw(map_input_path)
     food_pos = None
     ghost_pos_list = []
@@ -60,8 +60,7 @@ def read_map_level_2(map_input_path, ghost_as_wall: bool):
                     food_pos = (j, i)
                 elif raw_map[i][j] == 3:
                     ghost_pos_list.append((j, i))
-                    if ghost_as_wall:
-                        raw_map[i][j] = 1
+                    raw_map[i][j] = 1
 
                 cur = (j, i)
                 graph_map[cur] = []

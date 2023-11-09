@@ -12,7 +12,7 @@ class V(enum.Enum):
 
 def search_A(graph, start, goal):
     min_distance = dict()
-    maxValue = int(999999)
+    maxValue = int(10000000)
     for state in graph:
         min_distance[state] = maxValue
 
@@ -30,15 +30,16 @@ def search_A(graph, start, goal):
             continue #skip 
         
         explored.append((nodeFirst[1], nodeFirst[2])) #thêm vào đường đi 
-        if nodeFirst[1] == goal:
+        if nodeFirst[1] == goal:      
             return get_path(explored)    # success
         for child_state in graph[nodeFirst[1]]: #danh sach ke
             h_state = heuristic(nodeFirst[1], goal)
-            h_child_state = heuristic(child_state, goal)
-            manhattan = nodeFirst[0] - h_state + 1 + h_child_state
-            if min_distance[child_state] > manhattan:
-                min_distance[child_state] = manhattan
-                frontier.put((min_distance[child_state], child_state, nodeFirst[1]))          
+            h_child_score = heuristic(child_state, goal)
+            prev_distance = nodeFirst[0] - h_state
+            h_score = prev_distance + 1 + h_child_score
+            if min_distance[child_state] > h_score:
+                min_distance[child_state] = h_score
+                frontier.put((min_distance[child_state], child_state, nodeFirst[1])) 
     return None     # failure
 
 
